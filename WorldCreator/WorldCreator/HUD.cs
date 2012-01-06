@@ -8,13 +8,14 @@ namespace WorldCreator
 {
     class HUD
     {
-        class Slot
+        public class Slot
         {
             public const float Size = 0.04f;
             public static float Width;
-            SimpleQuad BgQuad;
-            SimpleQuad BlueQuad;
+            public SimpleQuad BgQuad;
+            public SimpleQuad BlueQuad;
             TextLabel ItemLabel;
+            public bool isSelected;
 
             public Slot(float left, float top)
             {
@@ -24,6 +25,7 @@ namespace WorldCreator
                 ItemLabel.SetPosition(left, top + 0.015f);
 
                 BlueQuad.IsVisible = false;
+                isSelected = false;
             }
 
             public bool IsVisible
@@ -40,37 +42,39 @@ namespace WorldCreator
             {
                 if (item != null)
                 {
-                    BlueQuad.IsVisible = item.IsEquipment;
+                    BlueQuad.IsVisible = isSelected;
                     ItemLabel.Caption = "  " + item.DisplayName;
                 }
                 else
                 {
-                    BlueQuad.IsVisible = false;
- 
+                    BlueQuad.IsVisible = false; 
                 }
             }
         }
 
 		List<DescribedProfile> I = Items.I.Values.ToList<DescribedProfile>();  // UHUHUHUHAHAHAHA!!!!!!!!!! <<<+==========
 
-        const int SlotsCount = 19;
+        public const int SlotsCount = 19;
         const float SlotsSpacing = 0.01f;
 
-        Slot[] Slots;
+        public Slot[] Slots;
 
         int _SelectIndex;
         int _ViewIndex;
 
-        SimpleQuad DescriptionBg;
-        SimpleQuad SelectedPicture;
+        public int KtoraStrona;
+        public int SelectedOne;
+
+        public SimpleQuad DescriptionBg;
+        public SimpleQuad SelectedPicture;
         TextLabel DescriptionLabel;
 
         //SimpleQuad CompassBg;
         //TextLabel CompassLabel;
 
-        SimpleQuad InventoryBg;
+        public SimpleQuad InventoryBg;
 
-        SimpleQuad MouseCursor;        
+        public SimpleQuad MouseCursor;        
 
         bool _isVisible;
 
@@ -95,10 +99,13 @@ namespace WorldCreator
             //CompassLabel.SetPosition(0.11f, 0.13f);
 
             InventoryBg = Engine.Singleton.Labeler.NewSimpleQuad("InventoryBgMaterial", 0.01f, 0.01f, 0.98f, 0.98f, new ColourValue(1, 1, 1), 0);
-            MouseCursor = Engine.Singleton.Labeler.NewSimpleQuad("Kursor", 0, 0, 32, 32, new ColourValue(1, 1, 1), 4);
+            MouseCursor = Engine.Singleton.Labeler.NewSimpleQuad("Kursor", 0.0f, 0.0f, Engine.Singleton.GetFloatFromPxWidth(32), Engine.Singleton.GetFloatFromPxHeight(32), new ColourValue(1, 1, 1), 4);
             //MouseCursor = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.03f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 0);
             //MouseCursor.SetPosition(0, 0);
             //MouseCursor.Caption = "X";
+
+            KtoraStrona = 0;
+            SelectedOne = -1;
 
             IsVisible = false;
         }
@@ -113,15 +120,13 @@ namespace WorldCreator
 
         public void UpdateView()
         {
-            for (int i = ViewIndex; i < ViewIndex + SlotsCount; i++)
+            for (int i = KtoraStrona * SlotsCount; i < KtoraStrona * SlotsCount + SlotsCount; i++)
                 if (i < Items.I.Count)
-                    Slots[i - ViewIndex].SetItem(I.ElementAt(i));
+                    Slots[i - KtoraStrona * SlotsCount].SetItem(I.ElementAt(i));
                 else
-                    Slots[i - ViewIndex].SetItem(null);
+                    Slots[i - KtoraStrona * SlotsCount].SetItem(null);
 
-            //MouseCursor.SetPosition(User.Mysz.X.abs, User.Mysz.Y.abs);
-            MouseCursor = Engine.Singleton.Labeler.NewSimpleQuad("Kursor", User.Mysz.X.abs, User.Mysz.Y.abs, 32, 32, new ColourValue(1, 1, 1), 4);
-            Console.WriteLine("{0}, {1}" ,User.Mysz.X.abs, User.Mysz.Y.abs);
+            MouseCursor.SetDimensions(Engine.Singleton.GetFloatFromPxWidth(User.Mysz.X.abs), Engine.Singleton.GetFloatFromPxHeight(User.Mysz.Y.abs), Engine.Singleton.GetFloatFromPxWidth(32), Engine.Singleton.GetFloatFromPxHeight(32));
         }
 
         public void UpdateDescription()
@@ -210,6 +215,13 @@ namespace WorldCreator
                 IsVisible = false;
             else
                 IsVisible = true;
+        }
+
+        public bool IsOver(SimpleQuad quad)
+        {
+            if (Engine.Singleton.GetFloatFromPxWidth(User.Mysz.X.abs) >= quad.Panel.Left && Engine.Singleton.GetFloatFromPxWidth(User.Mysz.X.abs) <= quad.Panel.Left + quad.Panel.Width && Engine.Singleton.GetFloatFromPxHeight(User.Mysz.Y.abs) >= quad.Panel.Top && Engine.Singleton.GetFloatFromPxHeight(User.Mysz.Y.abs) <= quad.Panel.Top + quad.Panel.Height)
+                return true;
+            return false;
         }
 
     }
