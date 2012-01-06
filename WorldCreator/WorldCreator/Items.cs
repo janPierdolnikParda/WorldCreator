@@ -18,7 +18,7 @@ namespace WorldCreator
         static public DescribedProfile kufelProfile;
 		static public DescribedProfile paleniskoProfile;
 
-		public Dictionary<string, DescribedProfile> I;
+		static public Dictionary<string, DescribedProfile> I;
 
         public Items()
         {

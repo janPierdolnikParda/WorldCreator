@@ -28,6 +28,8 @@ namespace WorldCreator
             Engine.Singleton.User.Camera.Position = new Vector3(0, 0, 0);
             //Engine.Singleton.User.Camera.Angle = 45;
 
+            Engine.Singleton.User.Mysz = Engine.Singleton.Mouse.MouseState;
+
             while (true)
             {
                 Engine.Singleton.Update();

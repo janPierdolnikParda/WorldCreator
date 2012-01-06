@@ -43,14 +43,14 @@ namespace WorldCreator
             State = newState;
         }
 		
-       /* private void HandleInventory()                               // @@ funkcja odpowiedzialna za obsługę ekwipunku
+        private void HandleInventory()                               // @@ funkcja odpowiedzialna za obsługę ekwipunku
         {
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_DOWN))      // następny przedmiot z listy
+            /*if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_DOWN))      // następny przedmiot z listy
                 HUDInventory.SelectIndex++;
             if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_UP))        // poprzedni przedmiot z listy
-                HUDInventory.SelectIndex--;
+                HUDInventory.SelectIndex--;*/
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_LMENU))     // wyrzucenie wybranego przedmiotu
+            /*if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_LMENU))     // wyrzucenie wybranego przedmiotu
             {
                 if (HUDInventory.SelectIndex != -1)
                 {
@@ -60,9 +60,9 @@ namespace WorldCreator
                         HUDInventory.UpdateView();
                     }
                 }
-            }
+            }*/
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_RCONTROL))              // założenie / zdjęcie wybranego przedmiotu
+            /*if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_RCONTROL))              // założenie / zdjęcie wybranego przedmiotu
             {
                 if (HUDInventory.SelectIndex != -1)
                 {
@@ -75,21 +75,27 @@ namespace WorldCreator
                         HUDInventory.UpdateItem(HUDInventory.SelectIndex);
                     }
                 }
-            }
+            }*/
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_TAB))       // opuszczenie ekranu ekwipunku
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_Q))       // opuszczenie ekranu ekwipunku
                 SwitchState(HumanControllerState.FREE);
         }
-		*/
+		
         public void Update()
         {
             if (User != null)
             {
-                HUD.IsVisible = false;
+                //HUD.IsVisible = false;
 
                 if (State == HumanControllerState.FREE)
                 {
                     HandleMovement();
+                    HUD.IsVisible = false;
+                }
+
+                if (State == HumanControllerState.INVENTORY)
+                {
+                    HandleInventory();
                     HUD.IsVisible = true;
                 }
             }

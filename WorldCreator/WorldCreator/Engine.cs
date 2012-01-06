@@ -101,14 +101,15 @@ namespace WorldCreator
             //NPCManager = new NPCManager();
             
             Labeler = new TextLabeler(5);
+
+            User = new Player();
+
             HumanController = new HumanController();
 
             TypedInput = new TypedInput();
 
 
-            //SoundManager = new SoundManager();
-
-            User = new Player();           
+            //SoundManager = new SoundManager();         
         }
 
         public void Update()
