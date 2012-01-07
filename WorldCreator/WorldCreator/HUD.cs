@@ -14,7 +14,7 @@ namespace WorldCreator
             public static float Width;
             public SimpleQuad BgQuad;
             public SimpleQuad BlueQuad;
-            TextLabel ItemLabel;
+            public TextLabel ItemLabel;
             public bool isSelected;
 
             public Slot(float left, float top)
@@ -47,7 +47,8 @@ namespace WorldCreator
                 }
                 else
                 {
-                    BlueQuad.IsVisible = false; 
+                    BlueQuad.IsVisible = false;
+                    ItemLabel.Caption = "";
                 }
             }
         }
@@ -73,6 +74,8 @@ namespace WorldCreator
         //TextLabel CompassLabel;
 
         public SimpleQuad InventoryBg;
+        public SimpleQuad ArrowDown;
+        public SimpleQuad ArrowUp;
 
         public SimpleQuad MouseCursor;        
 
@@ -85,24 +88,23 @@ namespace WorldCreator
             for (int i = 0; i < SlotsCount; i++)
                 Slots[i] = new Slot(SlotsSpacing, SlotsSpacing + i * (Slot.Size + SlotsSpacing));
 
-            DescriptionBg = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.2f, 0.5f, 0.6f, 0.45f, ColourValue.White, 1);
+            DescriptionBg = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.3f, 0.5f, 0.6f, 0.45f, ColourValue.White, 1);
             SelectedPicture = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial",
-                0.21f,
+                0.31f,
                 0.58f,
                 0.3f / Engine.Singleton.Camera.AspectRatio,
                 0.3f, ColourValue.White, 2);
             DescriptionLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.03f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 2);
-            DescriptionLabel.SetPosition(0.45f, 0.51f);
+            DescriptionLabel.SetPosition(0.55f, 0.51f);
 
             //CompassBg = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.1f, 0.1f, 0.2f, 0.1f, new ColourValue(1, 1, 1), 1);
             //CompassLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.05f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 2);
             //CompassLabel.SetPosition(0.11f, 0.13f);
 
             InventoryBg = Engine.Singleton.Labeler.NewSimpleQuad("InventoryBgMaterial", 0.01f, 0.01f, 0.98f, 0.98f, new ColourValue(1, 1, 1), 0);
+            ArrowDown = Engine.Singleton.Labeler.NewSimpleQuad("DownArrow", 0.2f, 0.7f, Engine.Singleton.GetFloatFromPxWidth(64), Engine.Singleton.GetFloatFromPxHeight(128), ColourValue.White, 2);
+            ArrowUp = Engine.Singleton.Labeler.NewSimpleQuad("UpArrow", 0.2f, 0.1f, Engine.Singleton.GetFloatFromPxWidth(64), Engine.Singleton.GetFloatFromPxHeight(128), ColourValue.Black, 2);
             MouseCursor = Engine.Singleton.Labeler.NewSimpleQuad("Kursor", 0.0f, 0.0f, Engine.Singleton.GetFloatFromPxWidth(32), Engine.Singleton.GetFloatFromPxHeight(32), new ColourValue(1, 1, 1), 4);
-            //MouseCursor = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.03f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 0);
-            //MouseCursor.SetPosition(0, 0);
-            //MouseCursor.Caption = "X";
 
             KtoraStrona = 0;
             SelectedOne = -1;
@@ -131,19 +133,21 @@ namespace WorldCreator
 
         public void UpdateDescription()
         {
-            if (SelectIndex != -1)
+            if (SelectedOne != -1 && SelectedOne < I.Count)
             {
                 DescriptionLabel.Caption =
-                    I[SelectIndex].DisplayName
+                    I[SelectedOne].DisplayName
                     + "\n\n"
-                    + I[SelectIndex].Description;
+                    + I[SelectedOne].Description;
 
-                if (I[SelectIndex] is ItemSword)
+                if (I[SelectedOne] is ItemSword)
                     DescriptionLabel.Caption += "\nObrazenia: "
-                        + (I[SelectIndex] as ItemSword).Damage.ToString();
+                        + (I[SelectedOne] as ItemSword).Damage.ToString();
 
-                if (I[SelectIndex].InventoryPictureMaterial != null)
-                    SelectedPicture.Panel.MaterialName = I[SelectIndex].InventoryPictureMaterial;
+                if (I[SelectedOne].InventoryPictureMaterial != null)
+                    SelectedPicture.Panel.MaterialName = I[SelectedOne].InventoryPictureMaterial;
+                else
+                    SelectedPicture.Panel.MaterialName = "QuadMaterial";
             }
             else
             {
@@ -199,6 +203,8 @@ namespace WorldCreator
                 DescriptionLabel.IsVisible = value;
                 SelectedPicture.IsVisible = value;
                 InventoryBg.IsVisible = value;
+                ArrowDown.IsVisible = value;
+                ArrowUp.IsVisible = value;
                 MouseCursor.IsVisible = value;
 
                 if (value)

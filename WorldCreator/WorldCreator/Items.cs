@@ -111,8 +111,6 @@ namespace WorldCreator
 			paleniskoProfile.IsPickable = false;
 			paleniskoProfile.Mass = 0;
 			I.Add("iPalenisko", paleniskoProfile);
-
-
         }
     }
 }

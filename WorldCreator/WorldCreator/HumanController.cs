@@ -33,7 +33,7 @@ namespace WorldCreator
             if (State == HumanControllerState.FREE)
             {
                 if (newState == HumanControllerState.INVENTORY)
-                    HUD.IsVisible = true;
+                    HUD.IsVisible = true;                    
             }
 
             else if (State == HumanControllerState.INVENTORY)
@@ -45,42 +45,16 @@ namespace WorldCreator
 		
         private void HandleInventory()                               // @@ funkcja odpowiedzialna za obsługę ekwipunku
         {
-            /*if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_DOWN))      // następny przedmiot z listy
-                HUDInventory.SelectIndex++;
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_UP))        // poprzedni przedmiot z listy
-                HUDInventory.SelectIndex--;*/
-
-            /*if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_LMENU))     // wyrzucenie wybranego przedmiotu
-            {
-                if (HUDInventory.SelectIndex != -1)
-                {
-                    if (Character.DropItem(HUDInventory.SelectIndex))
-                    {
-                        HUDInventory.SelectIndex = HUDInventory.SelectIndex;
-                        HUDInventory.UpdateView();
-                    }
-                }
-            }*/
-
-            /*if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_RCONTROL))              // założenie / zdjęcie wybranego przedmiotu
-            {
-                if (HUDInventory.SelectIndex != -1)
-                {
-                    if (Character.Inventory[HUDInventory.SelectIndex] is ItemSword)
-                    {
-                        if (Character.Sword != Character.Inventory[HUDInventory.SelectIndex])
-                            Character.Sword = Character.Inventory[HUDInventory.SelectIndex] as ItemSword;
-                        else
-                            Character.Sword = null;
-                        HUDInventory.UpdateItem(HUDInventory.SelectIndex);
-                    }
-                }
-            }*/
-
             if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left))
             {
-                int Obieg = 0;
+                while (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left)) 
+                {
+                    Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
+                }
+
                 bool Flag = false;
+
+                int Obieg = 0;
 
                 foreach (HUD.Slot S in HUD.Slots)
                 {
@@ -96,8 +70,39 @@ namespace WorldCreator
                     Obieg++;
                 }
 
+                if (HUD.IsOver(HUD.ArrowDown) && HUD.Slots[0].ItemLabel.Caption != "")
+                {
+                    HUD.KtoraStrona++;
+                    Flag = false;
+                }
+
+                if (HUD.IsOver(HUD.ArrowUp) && HUD.KtoraStrona > 0)
+                {
+                    HUD.KtoraStrona--;
+                    Flag = false;
+                }
+
                 if (Flag == false)
-                    HUD.SelectedOne = -1;                
+                    HUD.SelectedOne = -1;
+
+                HUD.UpdateView();
+                HUD.UpdateDescription();
+            }
+
+            if (Engine.Singleton.Mouse.MouseState.Z.rel > 0 && HUD.KtoraStrona > 0)     //scroll - gora!
+            {
+                HUD.KtoraStrona--;
+                HUD.SelectedOne = -1;
+                HUD.UpdateView();
+                HUD.UpdateDescription();
+            }
+
+            else if (Engine.Singleton.Mouse.MouseState.Z.rel < 0 && HUD.Slots[0].ItemLabel.Caption != "")   //scroll - dol!
+            {
+                HUD.KtoraStrona++;
+                HUD.SelectedOne = -1;
+                HUD.UpdateView();
+                HUD.UpdateDescription();
             }
 
             if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_Q))       // opuszczenie ekranu ekwipunku
@@ -163,10 +168,7 @@ namespace WorldCreator
                 User.Camera.Position += User.Camera.Orientation * Vector3.UNIT_Z * User.WalkSpeed;                                       
             }
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_TAB))             // wyświetlanie i chowanie HUD'a
-            {
-                HUD.ToggleVisibility();
-            }
+
 
             if (User.FocusedObject != null)
             {                

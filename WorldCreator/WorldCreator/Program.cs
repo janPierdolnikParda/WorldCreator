@@ -30,6 +30,24 @@ namespace WorldCreator
 
             Engine.Singleton.User.Mysz = Engine.Singleton.Mouse.MouseState;
 
+            /*var Celownik = OverlayManager.Singleton.Create("TestOverlay");
+
+            // Create a panel.
+            var panelCelownik = (PanelOverlayElement)OverlayManager.Singleton.CreateOverlayElement("Panel", "PanelElement");
+            // Set panel properties.
+            panelCelownik.MaterialName = "Celownik";
+            panelCelownik.MetricsMode = GuiMetricsMode.GMM_PIXELS;
+            panelCelownik.Top = (Engine.Singleton.Root.AutoCreatedWindow.Height / 2) - 2;
+            panelCelownik.Left = (Engine.Singleton.Root.AutoCreatedWindow.Width / 2) - 2;
+            panelCelownik.Width = 4;
+            panelCelownik.Height = 4;
+
+            // Add the panel to the overlay.
+            Celownik.Add2D(panelCelownik);
+
+            // Make the overlay visible.
+            Celownik.Show();*/
+
             while (true)
             {
                 Engine.Singleton.Update();
