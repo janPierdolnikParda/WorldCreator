@@ -183,5 +183,23 @@ namespace WorldCreator
                )
             );
         }
+
+        public float GetFloatFromPxHeight(int px)								// dwie boskie funkcyjki zwracające pozycję względem wielkości okna gry w skali od 0 do 1
+        {
+            float ret;
+
+            ret = ((float)px / (float)Root.AutoCreatedWindow.Height);
+
+            return ret;
+        }
+
+        public float GetFloatFromPxWidth(int px)
+        {
+            float ret;
+
+            ret = ((float)px / (float)Root.AutoCreatedWindow.Width);
+
+            return ret;
+        }
     }
 }

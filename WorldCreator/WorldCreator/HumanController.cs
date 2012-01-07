@@ -76,6 +76,29 @@ namespace WorldCreator
                     }
                 }
             }*/
+			
+            if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left))
+            {
+                int Obieg = 0;
+                bool Flag = false;
+
+                foreach (HUD.Slot S in HUD.Slots)
+                {
+                    if (HUD.IsOver(S.BgQuad))
+                    {
+                        HUD.SelectedOne = Obieg + HUD.SlotsCount * HUD.KtoraStrona;
+                        S.isSelected = true;
+                        Flag = true;
+                    }
+                    else
+                        S.isSelected = false;
+
+                    Obieg++;
+                }
+
+                if (Flag == false)
+                    HUD.SelectedOne = -1;                
+            }
 
             if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_Q))       // opuszczenie ekranu ekwipunku
                 SwitchState(HumanControllerState.FREE);
