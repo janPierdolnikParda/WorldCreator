@@ -1,7 +1,0 @@
-C:\Documents and Settings\Dominik\Moje dokumenty\Visual Studio 2010\c#\GAME!\GitHub\WorldCreator\WorldCreator\WorldCreator\bin\Debug\WorldCreator.exe.config
-C:\Users\Rafal\jpp\WorldCreator\WorldCreator\WorldCreator\WorldCreator\bin\Debug\WorldCreator.exe.config
-C:\Users\Rafal\jpp\WorldCreator\WorldCreator\WorldCreator\WorldCreator\obj\x86\Debug\WorldCreator.exe
-C:\Users\Rafal\jpp\WorldCreator\WorldCreator\WorldCreator\WorldCreator\obj\x86\Debug\WorldCreator.pdb
-C:\Users\Rafal\jpp\WorldCreator\WorldCreator\WorldCreator\WorldCreator\bin\Debug\WorldCreator.exe
-C:\Users\Rafal\jpp\WorldCreator\WorldCreator\WorldCreator\WorldCreator\bin\Debug\WorldCreator.pdb
-C:\Users\Rafal\jpp\WorldCreator\WorldCreator\WorldCreator\WorldCreator\obj\x86\Debug\ResolveAssemblyReference.cache
