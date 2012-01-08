@@ -7,7 +7,7 @@ namespace WorldCreator
 {
     class ObjectManager
     {
-        List<GameObject> Objects;
+        public List<GameObject> Objects;
 
         public ObjectManager()
         {

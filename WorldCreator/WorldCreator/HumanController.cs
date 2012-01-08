@@ -38,7 +38,16 @@ namespace WorldCreator
 
             else if (State == HumanControllerState.INVENTORY)
                 if (newState == HumanControllerState.FREE)
+                {
                     HUD.IsVisible = false;
+
+
+                    if (HUD.SelectedOne > -1)
+                        HUD.Slots[HUD.SelectedOne - (HUD.KtoraStrona * HUD.SlotsCount)].isSelected = false;
+                    HUD.KtoraStrona = 0;
+                    HUD.SelectedOne = -1;
+                    HUD.UpdateDescription();
+                }
 
             State = newState;
         }
@@ -53,6 +62,7 @@ namespace WorldCreator
                 }
 
                 bool Flag = false;
+                
 
                 int Obieg = 0;
 
@@ -60,9 +70,19 @@ namespace WorldCreator
                 {
                     if (HUD.IsOver(S.BgQuad))
                     {
-                        HUD.SelectedOne = Obieg + HUD.SlotsCount * HUD.KtoraStrona;
-                        S.isSelected = true;
-                        Flag = true;
+                        if (S.isSelected)
+                        {
+                            User.InventoryItem = HUD.I[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
+                            HUD.UpdateChosenItem();
+                            SwitchState(HumanControllerState.FREE);
+                        }
+
+                        else
+                        {
+                            HUD.SelectedOne = Obieg + HUD.SlotsCount * HUD.KtoraStrona;
+                            S.isSelected = true;
+                            Flag = true;
+                        }
                     }
                     else
                         S.isSelected = false;
@@ -168,7 +188,39 @@ namespace WorldCreator
                 User.Camera.Position += User.Camera.Orientation * Vector3.UNIT_Z * User.WalkSpeed;                                       
             }
 
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_E))      // usuwanie obiektu z Usera
+            {
+                User.InventoryItem = null;
+                HUD.UpdateChosenItem();
+            }
 
+            if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left))
+            {
+                while (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left))
+                {
+                    Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
+                }
+
+                if (User.InventoryItem != null)
+                    User.AddItem(true);
+            }
+
+            if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
+            {
+                while (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
+                {
+                    Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
+                }
+
+                if (User.InventoryItem != null)
+                    User.AddItem(false);
+            }
+
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_Q))
+            {
+                while (Engine.Singleton.ObjectManager.Objects.Count > 0)
+                    Engine.Singleton.ObjectManager.Destroy(Engine.Singleton.ObjectManager.Objects[0]);
+            }
 
             if (User.FocusedObject != null)
             {                

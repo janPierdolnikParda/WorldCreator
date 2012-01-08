@@ -53,15 +53,12 @@ namespace WorldCreator
             }
         }
 
-		List<DescribedProfile> I = Items.I.Values.ToList<DescribedProfile>();  // UHUHUHUHAHAHAHA!!!!!!!!!! <<<+==========
+		public List<DescribedProfile> I = Items.I.Values.ToList<DescribedProfile>();  // UHUHUHUHAHAHAHA!!!!!!!!!! <<<+==========
 
         public const int SlotsCount = 19;
         const float SlotsSpacing = 0.01f;
 
         public Slot[] Slots;
-
-        int _SelectIndex;
-        int _ViewIndex;
 
         public int KtoraStrona;
         public int SelectedOne;
@@ -77,7 +74,11 @@ namespace WorldCreator
         public SimpleQuad ArrowDown;
         public SimpleQuad ArrowUp;
 
-        public SimpleQuad MouseCursor;        
+        public SimpleQuad MouseCursor;
+
+        public SimpleQuad ChosenItemBg;
+        public SimpleQuad ChosenItemPicture;
+        public TextLabel ChosenItemLabel;
 
         bool _isVisible;
 
@@ -101,6 +102,11 @@ namespace WorldCreator
             //CompassLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.05f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 2);
             //CompassLabel.SetPosition(0.11f, 0.13f);
 
+            ChosenItemBg = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.0f, 0.0f, 0.2f, 0.05f, ColourValue.White, 1);
+            ChosenItemLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.02f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 2);
+            ChosenItemLabel.SetPosition(0.05f, 0.0f);
+            ChosenItemPicture = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.0f, 0.0f, 0.05f, 0.05f, ColourValue.White, 2);
+
             InventoryBg = Engine.Singleton.Labeler.NewSimpleQuad("InventoryBgMaterial", 0.01f, 0.01f, 0.98f, 0.98f, new ColourValue(1, 1, 1), 0);
             ArrowDown = Engine.Singleton.Labeler.NewSimpleQuad("DownArrow", 0.2f, 0.7f, Engine.Singleton.GetFloatFromPxWidth(64), Engine.Singleton.GetFloatFromPxHeight(128), ColourValue.White, 2);
             ArrowUp = Engine.Singleton.Labeler.NewSimpleQuad("UpArrow", 0.2f, 0.1f, Engine.Singleton.GetFloatFromPxWidth(64), Engine.Singleton.GetFloatFromPxHeight(128), ColourValue.Black, 2);
@@ -118,6 +124,27 @@ namespace WorldCreator
             {
                 return Engine.Singleton.User;
             }
+        }
+
+        public void UpdateChosenItem()
+        {
+            if (User.InventoryItem != null)
+            {
+                ChosenItemLabel.Caption = User.InventoryItem.DisplayName;
+
+                if (User.InventoryItem.InventoryPictureMaterial != null)
+                    ChosenItemPicture.Panel.MaterialName = User.InventoryItem.InventoryPictureMaterial;
+                else
+                    ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+            }
+
+            else
+            {
+                ChosenItemLabel.Caption = "";
+                ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+            }
+
+            ChosenItemLabel.Caption += "\n" + User.AimPosition.ToString();
         }
 
         public void UpdateView()
@@ -156,44 +183,6 @@ namespace WorldCreator
             }
         }
 
-        public int SelectIndex
-        {
-            get
-            {
-                return (_SelectIndex >= I.Count ? -1 : _SelectIndex);
-            }
-            set
-            {
-                if (value < 0)
-                    value = -1;
-                else if (value >= I.Count)
-                    value = I.Count - 1;
-                _SelectIndex = value;
-                if (_SelectIndex >= ViewIndex + SlotsCount)
-                    ViewIndex = _SelectIndex - SlotsCount + 1;
-                else if (_SelectIndex < ViewIndex)
-                    ViewIndex = _SelectIndex;
-
-                UpdateDescription();
-            }
-        }
-
-        public int ViewIndex
-        {
-            get
-            {
-                return _ViewIndex;
-            }
-            set
-            {
-                if (value != _ViewIndex)
-                {
-                    _ViewIndex = System.Math.Max(0, value);
-                    UpdateView();
-                }
-            }
-        }
-
         public bool IsVisible
         {
             set
@@ -206,6 +195,10 @@ namespace WorldCreator
                 ArrowDown.IsVisible = value;
                 ArrowUp.IsVisible = value;
                 MouseCursor.IsVisible = value;
+
+                ChosenItemBg.IsVisible = !value;
+                ChosenItemLabel.IsVisible = !value;
+                ChosenItemPicture.IsVisible = !value;
 
                 if (value)
                 {
