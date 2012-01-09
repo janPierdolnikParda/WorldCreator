@@ -140,6 +140,23 @@ namespace WorldCreator
 
                     I.Add(item["idstring"].InnerText, Kriper);
                 }
+				else if (item["type"].InnerText == "ItemSword")
+				{
+					ItemSword Kriper = new ItemSword();
+					Kriper.DisplayName = item["name"].InnerText;
+					Kriper.Description = item["description"].InnerText;
+					Kriper.MeshName = item["mesh"].InnerText;
+					Kriper.InventoryPictureMaterial = item["inventory_material"].InnerText;
+					Kriper.Mass = int.Parse(item["mass"].InnerText);
+					Kriper.IsPickable = bool.Parse(item["ispickable"].InnerText);
+					Kriper.IsEquipment = bool.Parse(item["isequipment"].InnerText);
+					Kriper.DisplayNameOffset = Vector3.ZERO;
+					Kriper.DisplayNameOffset.x = float.Parse(item["nameoffsetx"].InnerText);
+					Kriper.DisplayNameOffset.y = float.Parse(item["nameoffsety"].InnerText);
+					Kriper.DisplayNameOffset.z = float.Parse(item["nameoffsetz"].InnerText);
+
+					I.Add(item["idstring"].InnerText, Kriper);
+				}
             }
         }
     }

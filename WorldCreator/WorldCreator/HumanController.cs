@@ -200,6 +200,12 @@ namespace WorldCreator
             if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_D))
                 User.Camera.Position += User.Camera.Orientation * Vector3.UNIT_X * User.WalkSpeed;
 
+			if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_Q))								// chodzenie w górę
+				User.Camera.Position += User.Camera.Orientation * Vector3.UNIT_Y * User.WalkSpeed;
+			else if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_E))								// chodzenie w dół
+				User.Camera.Position += User.Camera.Orientation * Vector3.UNIT_Y * -User.WalkSpeed;
+
+
             if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_W))            // chodzenie do przodu
             {
                 User.Camera.Position += User.Camera.Orientation * Vector3.UNIT_Z * -User.WalkSpeed;
@@ -210,7 +216,7 @@ namespace WorldCreator
                 User.Camera.Position += User.Camera.Orientation * Vector3.UNIT_Z * User.WalkSpeed;                                       
             }
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_E))      // usuwanie obiektu z Usera
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_R))      // usuwanie obiektu z Usera
             {
                 User.InventoryItem = null;
                 HUD.UpdateChosenItem();
@@ -238,7 +244,7 @@ namespace WorldCreator
                     User.AddItem(false);
             }
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_Q))
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_F))
             {
                 while (Engine.Singleton.ObjectManager.Objects.Count > 0)
                     Engine.Singleton.ObjectManager.Destroy(Engine.Singleton.ObjectManager.Objects[0]);
