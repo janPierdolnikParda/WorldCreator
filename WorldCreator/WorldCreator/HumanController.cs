@@ -11,7 +11,9 @@ namespace WorldCreator
         public enum HumanControllerState
         {
             FREE,
-            INVENTORY
+            INVENTORY,
+            GRAB,
+            ROTATE
         }
 
         public Player User;
@@ -146,7 +148,27 @@ namespace WorldCreator
                     HandleInventory();
                     HUD.IsVisible = true;
                 }
+
+                if (State == HumanControllerState.GRAB)
+                {
+                    HUD.IsVisible = false;
+                    HandleGrab();
+                }
+
+                if (State == HumanControllerState.ROTATE)
+                {
+                    HUD.IsVisible = false;
+                    HandleRotate();
+                }
             }
+        }
+
+        private void HandleGrab()
+        {
+        }
+
+        private void HandleRotate()
+        {
         }
 
         private void HandleMovement()                             // @@ funkcja odpowiedzialna za całokształt poruszania się
