@@ -220,6 +220,7 @@ namespace WorldCreator
             {
                 while (Engine.Singleton.ObjectManager.Objects.Count > 0)
                     Engine.Singleton.ObjectManager.Destroy(Engine.Singleton.ObjectManager.Objects[0]);
+                User.FocusedObject = null;
             }
 
             if (User.FocusedObject != null)
