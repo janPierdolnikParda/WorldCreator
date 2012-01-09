@@ -49,16 +49,20 @@ namespace WorldCreator
             Mysz.height = Engine.Singleton.Camera.Viewport.ActualHeight;
             Mysz.width = Engine.Singleton.Camera.Viewport.ActualWidth;
 
+            FocusedObject = null;
+
             AimPosition = new Vector3();
-            AimPosition.x = (float) System.Math.Cos((double)Camera.getY().ValueRadians) * 5.0f + Camera.Position.x;
+            AimPosition.x = (float) System.Math.Sin((double)-Camera.getY().ValueRadians) * 5.0f;
+            AimPosition.x = (float)System.Math.Cos((double)Camera.getX().ValueRadians) * AimPosition.x + Camera.Position.x;
             AimPosition.y = (float) System.Math.Sin((double)Camera.getX().ValueRadians) * 5.0f + Camera.Position.y;
-            AimPosition.z = (float) System.Math.Sin((double)Camera.getY().ValueRadians) * 5.0f + Camera.Position.z;
+            AimPosition.z = (float) System.Math.Cos((double)Camera.getY().ValueRadians) * -5.0f;
+            AimPosition.z = (float)System.Math.Cos((double)Camera.getX().ValueRadians) * AimPosition.z + Camera.Position.z;
+            
+            /*Engine.Singleton.Camera.LookAt(new Vector3(5, 0, 0));
+            Camera.Position = Engine.Singleton.Camera.Position;
+            Camera.Orientation = Engine.Singleton.Camera.Orientation;*/
 
-            Console.WriteLine((double)Camera.fixRoll().ValueRadians);
-
-            /*Vector3 desiredPosition = Camera.Position;
-
-            AimPosition = Camera.Position * 15.0f;
+            //Vector3 desiredPosition = Camera.Position;
 
             PredicateRaycast raycast = new PredicateRaycast((b => !(b.UserData is TriggerVolume)));
             raycast.Go(Engine.Singleton.NewtonWorld, Camera.Position, AimPosition);
@@ -67,8 +71,11 @@ namespace WorldCreator
                 raycast.SortContacts();
                 AimPosition = Camera.Position
                   + (AimPosition - Camera.Position) * raycast.Contacts[0].Distance
-                  + raycast.Contacts[0].Normal * 0.15f;
-            }*/
+                  + raycast.Contacts[0].Normal * 0.05f;
+
+                if (raycast.Contacts[0].Body.UserData is GameObject)
+                    FocusedObject = raycast.Contacts[0].Body.UserData as GameObject;
+            }
         }
 
         public void AddItem(bool Left)
