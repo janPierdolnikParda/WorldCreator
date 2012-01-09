@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Mogre;
 using MogreNewt;
+using System.Xml;
 
 namespace WorldCreator
 {
@@ -111,6 +112,35 @@ namespace WorldCreator
 			paleniskoProfile.IsPickable = false;
 			paleniskoProfile.Mass = 0;
 			I.Add("iPalenisko", paleniskoProfile);
+
+ 
+
+            XmlDocument File = new XmlDocument();
+            File.Load("Media\\items.xml");
+
+            XmlElement root = File.DocumentElement;
+            XmlNodeList Items = root.SelectNodes("//items/item");
+
+            foreach (XmlNode item in Items)
+            {
+                if (item["type"].InnerText == "DescribedProfile")
+                {
+                    DescribedProfile Kriper = new DescribedProfile();
+                    Kriper.DisplayName = item["name"].InnerText;
+                    Kriper.Description = item["description"].InnerText;
+                    Kriper.MeshName = item["mesh"].InnerText;
+                    Kriper.InventoryPictureMaterial = item["inventory_material"].InnerText;
+                    Kriper.Mass = int.Parse(item["mass"].InnerText);
+                    Kriper.IsPickable = bool.Parse(item["ispickable"].InnerText);
+                    Kriper.IsEquipment = bool.Parse(item["isequipment"].InnerText);
+                    Kriper.DisplayNameOffset = Vector3.ZERO;
+                    Kriper.DisplayNameOffset.x = float.Parse(item["nameoffsetx"].InnerText);                    
+                    Kriper.DisplayNameOffset.y = float.Parse(item["nameoffsety"].InnerText);
+                    Kriper.DisplayNameOffset.z = float.Parse(item["nameoffsetz"].InnerText);
+
+                    I.Add(item["idstring"].InnerText, Kriper);
+                }
+            }
         }
     }
 }
