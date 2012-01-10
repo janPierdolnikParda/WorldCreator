@@ -13,7 +13,7 @@ namespace WorldCreator
 
         Entity Entity;
         SceneNode Node;
-        Body Body;
+        public Body Body;
 
         public Described(DescribedProfile profile)
         {

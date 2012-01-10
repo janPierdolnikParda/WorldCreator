@@ -16,18 +16,35 @@ namespace WorldCreator
             ROTATE
         }
 
+        public enum GrabOrRotateAxis
+        {
+            X,
+            Y,
+            Z
+        }
+
         public Player User;
         TextLabel3D TargetLabel;
 
-        HumanControllerState State;
+        public HumanControllerState State;
+
+        public Vector3 FocusedObjectPos;
+		public Quaternion FocusedObjectRot;
 
         HUD HUD;
+
+        GrabOrRotateAxis ActualAxis;
+
+        Vector3 PositionBefore;
+		Quaternion RotationBefore;
 
         public HumanController()
         {
             TargetLabel = Engine.Singleton.Labeler.NewTextLabel3D("Primitive", 0.04f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 0);
 
             HUD = new HUD();
+
+            ActualAxis = GrabOrRotateAxis.X;
         }
 
         public void SwitchState(HumanControllerState newState)
@@ -163,12 +180,126 @@ namespace WorldCreator
             }
         }
 
-        private void HandleGrab()
+        private void HandleGrab()												// @@ GRAB!!!!!!!__________________________________________
         {
+            /*if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_G))
+            {
+                User.FocusedObject.Position = PositionBefore;
+                SwitchState(HumanControllerState.FREE);
+            }*/
+			User.FocusedObject.Position = FocusedObjectPos;
+			User.FocusedObject.Orientation = RotationBefore;
+            if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
+            {
+                while (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
+                {
+                    Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
+                }
+
+				
+				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+				User.FocusedObject.Position = PositionBefore;
+               
+				SwitchState(HumanControllerState.FREE);
+            }
+
+            if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left))
+            {
+                while (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left))
+                {
+                    Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
+                }
+
+                (User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+
+                SwitchState(HumanControllerState.FREE);
+            }
+
+            if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_X))
+                ActualAxis = GrabOrRotateAxis.X;
+
+            if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_Y))
+                ActualAxis = GrabOrRotateAxis.Y;
+
+            if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_Z))
+                ActualAxis = GrabOrRotateAxis.Z;
+
+            switch (ActualAxis)
+            {
+                case GrabOrRotateAxis.X:
+                    FocusedObjectPos.x += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+                    break;
+
+                case GrabOrRotateAxis.Y:
+                    FocusedObjectPos.y += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+                    break;
+
+                case GrabOrRotateAxis.Z:
+                    FocusedObjectPos.z += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+                    break;
+            }
+
+           
         }
 
         private void HandleRotate()
         {
+			User.FocusedObject.Orientation = FocusedObjectRot;
+			User.FocusedObject.Position = PositionBefore;
+
+
+			if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
+			{
+				while (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
+				{
+					Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
+				}
+
+
+				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+				
+
+				User.FocusedObject.Orientation = RotationBefore;
+
+				SwitchState(HumanControllerState.FREE);
+			}
+
+			if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left))
+			{
+				while (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Left))
+				{
+					Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
+				}
+
+				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+
+				SwitchState(HumanControllerState.FREE);
+			}
+
+			if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_X))
+				ActualAxis = GrabOrRotateAxis.X;
+
+			if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_Y))
+				ActualAxis = GrabOrRotateAxis.Y;
+
+			if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_Z))
+				ActualAxis = GrabOrRotateAxis.Z;
+
+			switch (ActualAxis)
+			{
+				case GrabOrRotateAxis.X:
+					//FocusedObjectPos.x += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+					FocusedObjectRot.x += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+					break;
+
+				case GrabOrRotateAxis.Y:
+					FocusedObjectRot.y += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+					break;
+
+				case GrabOrRotateAxis.Z:
+					FocusedObjectRot.z += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+					break;
+			}
         }
 
         private void HandleMovement()                             // @@ funkcja odpowiedzialna za całokształt poruszania się
@@ -216,7 +347,7 @@ namespace WorldCreator
                 User.Camera.Position += User.Camera.Orientation * Vector3.UNIT_Z * User.WalkSpeed;                                       
             }
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_R))      // usuwanie obiektu z Usera
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_F))      // usuwanie obiektu z Usera
             {
                 User.InventoryItem = null;
                 HUD.UpdateChosenItem();
@@ -244,12 +375,55 @@ namespace WorldCreator
                     User.AddItem(false);
             }
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_F))
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_C))
             {
                 while (Engine.Singleton.ObjectManager.Objects.Count > 0)
                     Engine.Singleton.ObjectManager.Destroy(Engine.Singleton.ObjectManager.Objects[0]);
                 User.FocusedObject = null;
             }
+
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_G) && User.FocusedObject != null)
+            {
+
+				float x = User.FocusedObject.Position.x;
+				float y = User.FocusedObject.Position.y;
+				float z = User.FocusedObject.Position.z;
+
+                PositionBefore = new Vector3(x, y, z);
+
+
+				float xr = User.FocusedObject.Orientation.x;
+				float yr = User.FocusedObject.Orientation.y;
+				float zr = User.FocusedObject.Orientation.z;
+
+				RotationBefore = User.FocusedObject.Orientation;
+				
+				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+
+				
+                FocusedObjectPos = User.FocusedObject.Position;
+                SwitchState(HumanControllerState.GRAB);
+            }
+
+			if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_R) && User.FocusedObject != null)
+			{
+				float x = User.FocusedObject.Orientation.x;
+				float y = User.FocusedObject.Orientation.y;
+				float z = User.FocusedObject.Orientation.z;
+
+				//RotationBefore = new Quaternion(new Vector3(x, 0, 0), new Vector3(0, y, 0), new Vector3(0, 0, z));
+				RotationBefore = User.FocusedObject.Orientation;
+
+				float xg = User.FocusedObject.Position.x;					//// pozycja musi być stała żeby nie spadało podczas rotejta
+				float yg = User.FocusedObject.Position.y;
+				float zg = User.FocusedObject.Position.z;
+
+				PositionBefore = new Vector3(xg, yg, zg);
+
+				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+
+				SwitchState(HumanControllerState.ROTATE);
+			}
 
             if (User.FocusedObject != null)
             {                

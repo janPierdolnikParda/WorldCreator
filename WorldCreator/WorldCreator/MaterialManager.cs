@@ -15,6 +15,7 @@ namespace WorldCreator
         public MaterialID DescribedMaterialID;
         public MaterialID CharacterSensorMaterialID;
         public MaterialID EnemyMaterialID;
+		public MaterialID NoColID;
 
         MaterialPair TriggerVolumeCharacterPair;
         MaterialPair CharacterSensorPair;
@@ -25,6 +26,10 @@ namespace WorldCreator
         MaterialPair EnemyTriggerVolumePair;
 		MaterialPair EnemySensorPair;
 
+		MaterialPair NoColLevelPair;
+		MaterialPair NoColDMPair;
+		MaterialPair NoColCharPair;
+		MaterialPair NoColEnemyPair;
 
         public void Initialise()
         {
@@ -34,6 +39,27 @@ namespace WorldCreator
             DescribedMaterialID = new MaterialID(Engine.Singleton.NewtonWorld);
             CharacterSensorMaterialID = new MaterialID(Engine.Singleton.NewtonWorld);
             EnemyMaterialID = new MaterialID(Engine.Singleton.NewtonWorld);
+			NoColID = new MaterialID(Engine.Singleton.NewtonWorld);
+
+			
+			//
+
+			NoColLevelPair = new MaterialPair(
+				Engine.Singleton.NewtonWorld,
+				LevelMaterialID, NoColID);
+			NoColLevelPair.SetContactCallback(new IgnoreCollisionCallback());
+
+			NoColDMPair = new MaterialPair(
+				Engine.Singleton.NewtonWorld,
+				DescribedMaterialID, NoColID);
+			NoColDMPair.SetContactCallback(new IgnoreCollisionCallback());
+
+			NoColCharPair = new MaterialPair(
+				Engine.Singleton.NewtonWorld,
+				CharacterMaterialID, NoColID);
+			NoColCharPair.SetContactCallback(new IgnoreCollisionCallback());
+
+			//
 
             SensorLevelPair = new MaterialPair(
                 Engine.Singleton.NewtonWorld,

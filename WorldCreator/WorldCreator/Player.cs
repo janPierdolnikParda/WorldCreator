@@ -49,8 +49,6 @@ namespace WorldCreator
             Mysz.height = Engine.Singleton.Camera.Viewport.ActualHeight;
             Mysz.width = Engine.Singleton.Camera.Viewport.ActualWidth;
 
-            FocusedObject = null;
-
             AimPosition = new Vector3();
             AimPosition.x = (float) System.Math.Sin((double)-Camera.getY().ValueRadians) * 5.0f;
             AimPosition.x = (float)System.Math.Cos((double)Camera.getX().ValueRadians) * AimPosition.x + Camera.Position.x;
@@ -64,17 +62,22 @@ namespace WorldCreator
 
             //Vector3 desiredPosition = Camera.Position;
 
-            PredicateRaycast raycast = new PredicateRaycast((b => !(b.UserData is TriggerVolume)));
-            raycast.Go(Engine.Singleton.NewtonWorld, Camera.Position, AimPosition);
-            if (raycast.Contacts.Count != 0)
+            if (Engine.Singleton.HumanController.State == HumanController.HumanControllerState.FREE)
             {
-                raycast.SortContacts();
-                AimPosition = Camera.Position
-                  + (AimPosition - Camera.Position) * raycast.Contacts[0].Distance
-                  + raycast.Contacts[0].Normal * 0.05f;
+                FocusedObject = null;
 
-                if (raycast.Contacts[0].Body.UserData is GameObject)
-                    FocusedObject = raycast.Contacts[0].Body.UserData as GameObject;
+                PredicateRaycast raycast = new PredicateRaycast((b => !(b.UserData is TriggerVolume)));
+                raycast.Go(Engine.Singleton.NewtonWorld, Camera.Position, AimPosition);
+                if (raycast.Contacts.Count != 0)
+                {
+                    raycast.SortContacts();
+                    AimPosition = Camera.Position
+                      + (AimPosition - Camera.Position) * raycast.Contacts[0].Distance
+                      + raycast.Contacts[0].Normal * 0.05f;
+
+                    if (raycast.Contacts[0].Body.UserData is GameObject)
+                        FocusedObject = raycast.Contacts[0].Body.UserData as GameObject;
+                }
             }
         }
 

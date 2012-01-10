@@ -99,7 +99,7 @@ namespace WorldCreator
             kufelProfile.Description = "Pusty drewniany karczemny kufel.";
             kufelProfile.DisplayNameOffset = new Vector3(0, 0.4f, 0);
             kufelProfile.IsPickable = true;
-            kufelProfile.Mass = 20;
+            kufelProfile.Mass = 5;
             kufelProfile.InventoryPictureMaterial = "SpriteKufel";
 			I.Add("iKufel", kufelProfile);
 
