@@ -20,27 +20,12 @@ namespace WorldCreator
 
         public Vector3 AimPosition;
 
-        //public Plane DolnyPlane;
-
         public Player()
         {
             Camera = new GameCamera();
 
             Mysz = new MOIS.MouseState_NativePtr();
             InventoryItem = null;
-
-            /*DolnyPlane = new Plane(Vector3.UNIT_Y, 0);
-            MeshManager.Singleton.CreatePlane("ground",
-              ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, DolnyPlane,
-              0.015f, 0.015f, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
-
-            Entity ent;
-
-            ent = Engine.Singleton.SceneManager.CreateEntity("GroundEntity", "ground");
-            Engine.Singleton.SceneManager.RootSceneNode.CreateChildSceneNode().AttachObject(ent);
-
-            ent.SetMaterialName("Red");
-            ent.CastShadows = false;*/
         }
 
         public void Update()
@@ -55,12 +40,6 @@ namespace WorldCreator
             AimPosition.y = (float) System.Math.Sin((double)Camera.getX().ValueRadians) * 5.0f + Camera.Position.y;
             AimPosition.z = (float) System.Math.Cos((double)Camera.getY().ValueRadians) * -5.0f;
             AimPosition.z = (float)System.Math.Cos((double)Camera.getX().ValueRadians) * AimPosition.z + Camera.Position.z;
-            
-            /*Engine.Singleton.Camera.LookAt(new Vector3(5, 0, 0));
-            Camera.Position = Engine.Singleton.Camera.Position;
-            Camera.Orientation = Engine.Singleton.Camera.Orientation;*/
-
-            //Vector3 desiredPosition = Camera.Position;
 
             if (Engine.Singleton.HumanController.State == HumanController.HumanControllerState.FREE)
             {

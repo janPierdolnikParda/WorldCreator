@@ -16,6 +16,8 @@ namespace WorldCreator
         SceneNode Node;
         public Body Body;
 
+		public Vector3 Inertia;
+
         public Described(DescribedProfile profile)
         {
             Profile = profile.Clone();
@@ -34,8 +36,8 @@ namespace WorldCreator
             //
             Vector3 inertia = new Vector3(1,1,1), offset;
             coll.CalculateInertialMatrix(out inertia, out offset);
-            
-            
+
+			Inertia = inertia;
             Body = new Body(Engine.Singleton.NewtonWorld, coll, true);
             Body.AttachNode(Node);
             Body.SetMassMatrix(Profile.Mass, Profile.Mass * inertia);

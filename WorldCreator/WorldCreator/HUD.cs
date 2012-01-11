@@ -80,6 +80,9 @@ namespace WorldCreator
         public SimpleQuad ChosenItemPicture;
         public TextLabel ChosenItemLabel;
 
+		public SimpleQuad GravityBg;
+		public TextLabel GravityLabel;
+
         bool _isVisible;
 
         public HUD()
@@ -98,14 +101,16 @@ namespace WorldCreator
             DescriptionLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.03f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 2);
             DescriptionLabel.SetPosition(0.55f, 0.51f);
 
-            //CompassBg = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.1f, 0.1f, 0.2f, 0.1f, new ColourValue(1, 1, 1), 1);
-            //CompassLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.05f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 2);
-            //CompassLabel.SetPosition(0.11f, 0.13f);
-
             ChosenItemBg = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.0f, 0.0f, 0.2f, 0.05f, ColourValue.White, 1);
             ChosenItemLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.02f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 2);
             ChosenItemLabel.SetPosition(0.05f, 0.0f);
             ChosenItemPicture = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.0f, 0.0f, 0.05f, 0.05f, ColourValue.White, 2);
+
+			GravityBg = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.5f, 0.0f, 0.3f, 0.07f, ColourValue.White, 1);
+			GravityLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.05f, ColourValue.Green, ColourValue.Green, 2);
+			GravityLabel.SetPosition(0.55f, 0.01f);
+			GravityLabel.Caption = "Gravity: ON";
+
 
             InventoryBg = Engine.Singleton.Labeler.NewSimpleQuad("InventoryBgMaterial", 0.01f, 0.01f, 0.98f, 0.98f, new ColourValue(1, 1, 1), 0);
             ArrowDown = Engine.Singleton.Labeler.NewSimpleQuad("DownArrow", 0.2f, 0.7f, Engine.Singleton.GetFloatFromPxWidth(64), Engine.Singleton.GetFloatFromPxHeight(128), ColourValue.White, 2);
@@ -146,6 +151,12 @@ namespace WorldCreator
 
             ChosenItemLabel.Caption += "\n" + User.AimPosition.ToString();
         }
+
+		public void UpdateGravityLabel(string what, ColourValue color)
+		{
+			GravityLabel.SetColor(color, color);
+			GravityLabel.Caption = what;
+		}
 
         public void UpdateView()
         {
@@ -199,6 +210,9 @@ namespace WorldCreator
                 ChosenItemBg.IsVisible = !value;
                 ChosenItemLabel.IsVisible = !value;
                 ChosenItemPicture.IsVisible = !value;
+
+				GravityBg.IsVisible = !value;
+				GravityLabel.IsVisible = !value;
 
                 if (value)
                 {

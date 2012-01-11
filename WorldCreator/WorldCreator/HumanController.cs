@@ -38,11 +38,14 @@ namespace WorldCreator
         Vector3 PositionBefore;
 		Quaternion RotationBefore;
 
+		bool Gravity;
+
         public HumanController()
         {
             TargetLabel = Engine.Singleton.Labeler.NewTextLabel3D("Primitive", 0.04f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 0);
 
             HUD = new HUD();
+			Gravity = true;
 
             ActualAxis = GrabOrRotateAxis.X;
         }
@@ -471,11 +474,48 @@ namespace WorldCreator
             {
                 TargetLabel.IsVisible = false;
             }
+
+
+			if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_T))
+			{
+				ToggleGravity();
+			}
+
+			if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_V) && User.FocusedObject != null)
+			{
+				Engine.Singleton.ObjectManager.Destroy(User.FocusedObject);
+				User.FocusedObject = null;
+			}
+
+
         }
 
         public void ToggleHud()
         {
             HUD.ToggleVisibility();
         }
+
+		public void ToggleGravity()
+		{
+			if (Gravity)							// wyłączanie grawitacji
+			{
+				foreach (Described d in Engine.Singleton.ObjectManager.Objects)
+				{
+					d.Body.SetMassMatrix(0, Vector3.ZERO);
+				}
+
+				Gravity = false;
+				HUD.UpdateGravityLabel("Gravity: OFF", ColourValue.Red);
+			}
+			else
+			{
+				foreach (Described d in Engine.Singleton.ObjectManager.Objects)
+				{
+					d.Body.SetMassMatrix(d.Profile.Mass, d.Profile.Mass * d.Inertia);
+				}
+				Gravity = true;
+				HUD.UpdateGravityLabel("Gravity: ON", ColourValue.Green);
+			}
+		}
     }
 }
