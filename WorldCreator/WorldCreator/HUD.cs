@@ -8,6 +8,14 @@ namespace WorldCreator
 {
     class HUD
     {
+        public enum InventoryCategory
+        {
+            DESCRIBED,
+            CHARACTER,
+            ENEMY,
+            LIGHT
+        }
+
         public class Slot
         {
             public const float Size = 0.04f;
@@ -51,9 +59,24 @@ namespace WorldCreator
                     ItemLabel.Caption = "";
                 }
             }
+
+            public void SetCharacter(Character character)
+            {
+                if (character != null)
+                {
+                    BlueQuad.IsVisible = isSelected;
+                    ItemLabel.Caption = "  " + character.DisplayName;
+                }
+                else
+                {
+                    BlueQuad.IsVisible = false;
+                    ItemLabel.Caption = "";
+                }
+            }
         }
 
 		public List<DescribedProfile> I = Items.I.Values.ToList<DescribedProfile>();  // UHUHUHUHAHAHAHA!!!!!!!!!! <<<+==========
+        public List<Character> C = NPCManager.NPCs.Values.ToList<Character>();
 
         public const int SlotsCount = 19;
         const float SlotsSpacing = 0.01f;
@@ -79,6 +102,8 @@ namespace WorldCreator
         public SimpleQuad ChosenItemBg;
         public SimpleQuad ChosenItemPicture;
         public TextLabel ChosenItemLabel;
+
+        public InventoryCategory Category = InventoryCategory.CHARACTER;
 
 		public SimpleQuad GravityBg;
 		public TextLabel GravityLabel;
@@ -133,23 +158,40 @@ namespace WorldCreator
 
         public void UpdateChosenItem()
         {
-            if (User.InventoryItem != null)
+            switch (Category)
             {
-                ChosenItemLabel.Caption = User.InventoryItem.DisplayName;
+                case InventoryCategory.DESCRIBED:
+                    if (User.InventoryItem != null)
+                    {
+                        ChosenItemLabel.Caption = User.InventoryItem.DisplayName;
 
-                if (User.InventoryItem.InventoryPictureMaterial != null)
-                    ChosenItemPicture.Panel.MaterialName = User.InventoryItem.InventoryPictureMaterial;
-                else
-                    ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+                        if (User.InventoryItem.InventoryPictureMaterial != null)
+                            ChosenItemPicture.Panel.MaterialName = User.InventoryItem.InventoryPictureMaterial;
+                        else
+                            ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+                    }
+
+                    else
+                    {
+                        ChosenItemLabel.Caption = "";
+                        ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+                    }
+                    break;
+
+                case InventoryCategory.CHARACTER:
+                    if (User.InventoryCharacter != null)
+                    {
+                        ChosenItemLabel.Caption = User.InventoryCharacter.DisplayName;
+                        ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+                    }
+
+                    else
+                    {
+                        ChosenItemLabel.Caption = "";
+                        ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+                    }
+                    break;
             }
-
-            else
-            {
-                ChosenItemLabel.Caption = "";
-                ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
-            }
-
-            ChosenItemLabel.Caption += "\n" + User.AimPosition.ToString();
         }
 
 		public void UpdateGravityLabel(string what, ColourValue color)
@@ -161,17 +203,36 @@ namespace WorldCreator
         public void UpdateView()
         {
             for (int i = KtoraStrona * SlotsCount; i < KtoraStrona * SlotsCount + SlotsCount; i++)
-                if (i < Items.I.Count)
-                    Slots[i - KtoraStrona * SlotsCount].SetItem(I.ElementAt(i));
-                else
-                    Slots[i - KtoraStrona * SlotsCount].SetItem(null);
+                switch (Category)
+                {
+                    case InventoryCategory.DESCRIBED:
+                        if (i < I.Count)
+                            Slots[i - KtoraStrona * SlotsCount].SetItem(I.ElementAt(i));
+                        else
+                            Slots[i - KtoraStrona * SlotsCount].SetItem(null);
+                        break;
+
+                    case InventoryCategory.CHARACTER:
+                        if (i < C.Count)
+                            Slots[i - KtoraStrona * SlotsCount].SetCharacter(C.ElementAt(i));
+                        else
+                            Slots[i - KtoraStrona * SlotsCount].SetCharacter(null);
+                        break;
+                }
 
             MouseCursor.SetDimensions(Engine.Singleton.GetFloatFromPxWidth(User.Mysz.X.abs), Engine.Singleton.GetFloatFromPxHeight(User.Mysz.Y.abs), Engine.Singleton.GetFloatFromPxWidth(32), Engine.Singleton.GetFloatFromPxHeight(32));
         }
 
         public void UpdateDescription()
         {
-            if (SelectedOne != -1 && SelectedOne < I.Count)
+            if (Category == InventoryCategory.CHARACTER)
+            {
+                //DescriptionLabel.Caption = C[SelectedOne].Profile.DisplayName;
+
+                SelectedPicture.Panel.MaterialName = "QuadMaterial";
+            }
+
+            if (SelectedOne != -1 && SelectedOne < I.Count && Category != InventoryCategory.CHARACTER)
             {
                 DescriptionLabel.Caption =
                     I[SelectedOne].DisplayName

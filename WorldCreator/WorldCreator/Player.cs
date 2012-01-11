@@ -17,6 +17,7 @@ namespace WorldCreator
         public MOIS.MouseState_NativePtr Mysz;
 
         public DescribedProfile InventoryItem;
+        public Character InventoryCharacter;
 
         public Vector3 AimPosition;
 
@@ -62,16 +63,29 @@ namespace WorldCreator
 
         public void AddItem(bool Left)
         {
-            Described newItem = new Described(InventoryItem);
-            if (Left)
-                newItem.Position = AimPosition;
-            else
-                newItem.Position = Camera.Position;
+            switch (Engine.Singleton.HumanController.HUD.Category)
+            {
+                case HUD.InventoryCategory.DESCRIBED:
+                    Described newItem = new Described(InventoryItem);
+                    if (Left)
+                        newItem.Position = AimPosition;
+                    else
+                        newItem.Position = Camera.Position;
+                    Engine.Singleton.ObjectManager.Add(newItem);
+                    break;
 
-			if (!Engine.Singleton.HumanController.Gravity)
-				newItem.Body.SetMassMatrix(0, Vector3.ZERO);
-
-            Engine.Singleton.ObjectManager.Add(newItem);
+                case HUD.InventoryCategory.CHARACTER:
+                    Character newCharacter = InventoryCharacter;
+                    if (Left)
+                        newCharacter.Position = AimPosition;
+                    else
+                        newCharacter.Position = Camera.Position;
+                    Console.WriteLine(newCharacter.Position.ToString());
+                    Console.WriteLine(AimPosition.ToString());
+                    Console.WriteLine(Camera.Position.ToString());
+                    Engine.Singleton.ObjectManager.Add(newCharacter);
+                    break;
+            }            
         }
     }
 }

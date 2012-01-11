@@ -35,6 +35,8 @@ namespace WorldCreator
 
         public HumanController HumanController;
         public TypedInput TypedInput;
+        public CharacterProfileManager CharacterProfileManager;
+        public NPCManager NPCManager;
 
         //CharacterProfileManager CharacterProfileManager;
         //public NPCManager NPCManager;
@@ -103,6 +105,10 @@ namespace WorldCreator
             Labeler = new TextLabeler(5);
 
             User = new Player();
+
+            CharacterProfileManager = new CharacterProfileManager();
+
+            NPCManager = new NPCManager();
 
             HumanController = new HumanController();
 
