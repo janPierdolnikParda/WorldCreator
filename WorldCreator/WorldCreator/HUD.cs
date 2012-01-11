@@ -60,7 +60,7 @@ namespace WorldCreator
                 }
             }
 
-            public void SetCharacter(Character character)
+            public void SetCharacter(CharacterProfile character)
             {
                 if (character != null)
                 {
@@ -75,8 +75,8 @@ namespace WorldCreator
             }
         }
 
-		public List<DescribedProfile> I = Items.I.Values.ToList<DescribedProfile>();  // UHUHUHUHAHAHAHA!!!!!!!!!! <<<+==========
-        public List<Character> C = NPCManager.NPCs.Values.ToList<Character>();
+		public List<DescribedProfile> I = Items.I.Values.ToList<DescribedProfile>();
+        public List<CharacterProfile> C = CharacterProfileManager.C.Values.ToList<CharacterProfile>();
 
         public const int SlotsCount = 19;
         const float SlotsSpacing = 0.01f;
@@ -90,9 +90,6 @@ namespace WorldCreator
         public SimpleQuad SelectedPicture;
         TextLabel DescriptionLabel;
 
-        //SimpleQuad CompassBg;
-        //TextLabel CompassLabel;
-
         public SimpleQuad InventoryBg;
         public SimpleQuad ArrowDown;
         public SimpleQuad ArrowUp;
@@ -103,7 +100,7 @@ namespace WorldCreator
         public SimpleQuad ChosenItemPicture;
         public TextLabel ChosenItemLabel;
 
-        public InventoryCategory Category = InventoryCategory.CHARACTER;
+        public InventoryCategory Category = InventoryCategory.DESCRIBED;
 
 		public SimpleQuad GravityBg;
 		public TextLabel GravityLabel;
@@ -112,6 +109,9 @@ namespace WorldCreator
 
         public HUD()
         {
+
+			_isVisible = false;
+
             Slot.Width = Slot.Size * 6 / Engine.Singleton.Camera.AspectRatio;
             Slots = new Slot[SlotsCount];
             for (int i = 0; i < SlotsCount; i++)
@@ -194,6 +194,13 @@ namespace WorldCreator
             }
         }
 
+        public void UnselectAll()
+        {
+            foreach (Slot S in Slots)
+                if (S.isSelected)
+                    S.isSelected = false;
+        }
+
 		public void UpdateGravityLabel(string what, ColourValue color)
 		{
 			GravityLabel.SetColor(color, color);
@@ -227,7 +234,7 @@ namespace WorldCreator
         {
             if (Category == InventoryCategory.CHARACTER)
             {
-                //DescriptionLabel.Caption = C[SelectedOne].Profile.DisplayName;
+                //DescriptionLabel.Caption = C[SelectedOne].DisplayName;
 
                 SelectedPicture.Panel.MaterialName = "QuadMaterial";
             }

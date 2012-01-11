@@ -24,7 +24,11 @@ namespace WorldCreator
 
             Entity = Engine.Singleton.SceneManager.CreateEntity(Profile.MeshName);
             Node = Engine.Singleton.SceneManager.RootSceneNode.CreateChildSceneNode();
-            Node.AttachObject(Entity);
+
+			Entity.CastShadows = true;
+			Node.AttachObject(Entity);
+
+
 
             ConvexCollision coll = new MogreNewt.CollisionPrimitives.ConvexHull(Engine.Singleton.NewtonWorld, 
                 Node, 
@@ -32,8 +36,6 @@ namespace WorldCreator
                 0.1f, 
                 Engine.Singleton.GetUniqueBodyId());
           
-            
-            //
             Vector3 inertia = new Vector3(1,1,1), offset;
             coll.CalculateInertialMatrix(out inertia, out offset);
 
@@ -57,9 +59,7 @@ namespace WorldCreator
 
 		public void BodyForceCallback(Body body, float timeStep, int threadIndex)
 		{
-			//Vector3 force = new Vector3(1, 0, 1) * Profile.Mass * Engine.FixedFPS;
 
-			//Body.Velocity = Vector3.ZERO;
 		}
 
         public void TurnTo(Vector3 point)
@@ -67,8 +67,7 @@ namespace WorldCreator
             Orientation = Vector3.UNIT_Z.GetRotationTo((point - Position) * new Vector3(1, 0, 1));
         }
 
-        void BodyTransformCallback(Body sender, Quaternion orientation,
-            Vector3 position, int threadIndex)
+        void BodyTransformCallback(Body sender, Quaternion orientation, Vector3 position, int threadIndex)
         {
             Node.Position = position;
             Node.Orientation = Orientation;
@@ -77,6 +76,7 @@ namespace WorldCreator
         public override void Update()
         {
         }
+
         public override Vector3 Position
         {
             get { return Body.Position; }

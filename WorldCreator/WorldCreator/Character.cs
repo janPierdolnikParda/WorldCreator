@@ -21,6 +21,8 @@ namespace WorldCreator
 
         Quaternion _Orientation;
 
+		public Vector3 Inertia;
+
         public Character(CharacterProfile profile)
         {
             Profile = profile.Clone();
@@ -49,11 +51,13 @@ namespace WorldCreator
             Vector3 inertia, offset;
             collision.CalculateInertialMatrix(out inertia, out offset);
 
-            inertia *= Profile.BodyMass;
+           
+
+			Inertia = inertia;
 
             Body = new Body(Engine.Singleton.NewtonWorld, collision, true);
             Body.AttachNode(Node);
-            Body.SetMassMatrix(Profile.BodyMass, inertia);
+            Body.SetMassMatrix(Profile.BodyMass, inertia * Profile.BodyMass);
             Body.AutoSleep = false;
 
             Body.Transformed += BodyTransformCallback;
@@ -155,6 +159,12 @@ namespace WorldCreator
 
         public override void Destroy()
         {
+			Node.DetachAllObjects();
+			Engine.Singleton.SceneManager.DestroySceneNode(Node);
+			Engine.Singleton.SceneManager.DestroyEntity(Entity);
+			Body.Dispose();
+			Body = null;
+
             base.Destroy();
         }
     }
