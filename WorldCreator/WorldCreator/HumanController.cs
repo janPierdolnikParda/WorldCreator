@@ -199,6 +199,9 @@ namespace WorldCreator
 				
 				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
 				User.FocusedObject.Position = PositionBefore;
+
+				(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+				(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
                
 				SwitchState(HumanControllerState.FREE);
             }
@@ -211,6 +214,9 @@ namespace WorldCreator
                 }
 
                 (User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+				
+				(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+				(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
 
                 SwitchState(HumanControllerState.FREE);
             }
@@ -262,6 +268,8 @@ namespace WorldCreator
 				
 
 				User.FocusedObject.Orientation = RotationBefore;
+				(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+				(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
 
 				SwitchState(HumanControllerState.FREE);
 			}
@@ -274,7 +282,8 @@ namespace WorldCreator
 				}
 
 				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
-
+				(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+				(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
 				SwitchState(HumanControllerState.FREE);
 			}
 

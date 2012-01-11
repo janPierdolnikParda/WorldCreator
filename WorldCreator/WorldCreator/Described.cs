@@ -11,6 +11,7 @@ namespace WorldCreator
     {
         public DescribedProfile Profile;
 
+		
         Entity Entity;
         SceneNode Node;
         public Body Body;
@@ -19,16 +20,9 @@ namespace WorldCreator
         {
             Profile = profile.Clone();
 
-            
-
             Entity = Engine.Singleton.SceneManager.CreateEntity(Profile.MeshName);
             Node = Engine.Singleton.SceneManager.RootSceneNode.CreateChildSceneNode();
             Node.AttachObject(Entity);
-
-            Vector3 scaledSize = Entity.BoundingBox.Size * Profile.BodyScaleFactor;
-
-        
-           
 
             ConvexCollision coll = new MogreNewt.CollisionPrimitives.ConvexHull(Engine.Singleton.NewtonWorld, 
                 Node, 
@@ -50,6 +44,8 @@ namespace WorldCreator
             Body.UserData = this;
 
             coll.Dispose();
+
+			Body.ForceCallback += BodyForceCallback;
         }
 
         public bool IsPickable
@@ -57,7 +53,12 @@ namespace WorldCreator
             get { return Profile.IsPickable; }
         }
 
-        
+		public void BodyForceCallback(Body body, float timeStep, int threadIndex)
+		{
+			//Vector3 force = new Vector3(1, 0, 1) * Profile.Mass * Engine.FixedFPS;
+
+			//Body.Velocity = Vector3.ZERO;
+		}
 
         public void TurnTo(Vector3 point)
         {
