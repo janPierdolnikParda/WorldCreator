@@ -67,6 +67,10 @@ namespace WorldCreator
                 newItem.Position = AimPosition;
             else
                 newItem.Position = Camera.Position;
+
+			if (!Engine.Singleton.HumanController.Gravity)
+				newItem.Body.SetMassMatrix(0, Vector3.ZERO);
+
             Engine.Singleton.ObjectManager.Add(newItem);
         }
     }

@@ -38,7 +38,7 @@ namespace WorldCreator
         Vector3 PositionBefore;
 		Quaternion RotationBefore;
 
-		bool Gravity;
+		public bool Gravity;
 
         public HumanController()
         {
