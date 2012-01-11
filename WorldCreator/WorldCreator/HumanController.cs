@@ -31,7 +31,7 @@ namespace WorldCreator
         public Vector3 FocusedObjectPos;
 		public Vector3 FocusedObjectRot;
 
-        HUD HUD;
+        public HUD HUD;
 
         GrabOrRotateAxis ActualAxis;
 
@@ -94,9 +94,20 @@ namespace WorldCreator
                     {
                         if (S.isSelected)
                         {
-                            User.InventoryItem = HUD.I[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
-                            HUD.UpdateChosenItem();
-                            SwitchState(HumanControllerState.FREE);
+                            switch (HUD.Category)
+                            {
+                                case HUD.InventoryCategory.DESCRIBED:
+                                    User.InventoryItem = HUD.I[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
+                                    HUD.UpdateChosenItem();
+                                    SwitchState(HumanControllerState.FREE);
+                                    break;
+
+                                case HUD.InventoryCategory.CHARACTER:
+                                    User.InventoryCharacter = HUD.C[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
+                                    HUD.UpdateChosenItem();
+                                    SwitchState(HumanControllerState.FREE);
+                                    break;
+                            }
                         }
 
                         else
