@@ -10,11 +10,11 @@ namespace WorldCreator
     {
         static public CharacterProfile character;
 
-        static public Dictionary<String, CharacterProfile> D;
+        static public Dictionary<String, CharacterProfile> C;
 
         public CharacterProfileManager()
         {
-            D = new Dictionary<String, CharacterProfile>();
+            C = new Dictionary<String, CharacterProfile>();
             character = new CharacterProfile();
             character.BodyMass = 70;
             character.BodyScaleFactor = new Vector3(1.5f, 1, 1.5f);
@@ -22,8 +22,10 @@ namespace WorldCreator
             character.MeshName = "Man.mesh";
             character.WalkSpeed = 1.85f;
             character.PictureMaterial = "AdamMaterial";
+            character.DisplayNameOffset = new Vector3(0, 1, 0);
+            character.DisplayName = "Andrzej";
 
-            D.Add("iCharacter", character);
+            C.Add("cCharacter", character);
         }
     }
 }

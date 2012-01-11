@@ -142,6 +142,38 @@ namespace WorldCreator
                 HUD.UpdateDescription();
             }
 
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_LEFT))
+            {
+                switch (HUD.Category)
+                {
+                    case HUD.InventoryCategory.CHARACTER:
+                        HUD.Category = HUD.InventoryCategory.DESCRIBED;
+                        break;
+                }
+
+                HUD.SelectedOne = -1;
+                HUD.KtoraStrona = 0;
+                HUD.UnselectAll();
+                HUD.UpdateDescription();
+                HUD.UpdateView();
+            }
+
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_RIGHT))
+            {
+                switch (HUD.Category)
+                {
+                    case HUD.InventoryCategory.DESCRIBED:
+                        HUD.Category = HUD.InventoryCategory.CHARACTER;
+                        break;
+                }
+
+                HUD.SelectedOne = -1;
+                HUD.KtoraStrona = 0;
+                HUD.UnselectAll();
+                HUD.UpdateDescription();
+                HUD.UpdateView();
+            }
+
             if (Engine.Singleton.Mouse.MouseState.Z.rel > 0 && HUD.KtoraStrona > 0)     //scroll - gora!
             {
                 HUD.KtoraStrona--;
@@ -397,7 +429,16 @@ namespace WorldCreator
 
             if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_F))      // usuwanie obiektu z Usera
             {
-                User.InventoryItem = null;
+                switch (HUD.Category)
+                {
+                    case HUD.InventoryCategory.DESCRIBED:
+                        User.InventoryItem = null;
+                        break;
+                    case HUD.InventoryCategory.CHARACTER:
+                        User.InventoryCharacter = null;
+                        break;
+                }
+             
                 HUD.UpdateChosenItem();
             }
 
@@ -408,8 +449,18 @@ namespace WorldCreator
                     Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
                 }
 
-                if (User.InventoryItem != null)
-                    User.AddItem(true);
+                switch (HUD.Category)
+                {
+                    case HUD.InventoryCategory.DESCRIBED:
+                        if (User.InventoryItem != null)
+                            User.AddItem(true);
+                        break;
+                    case
+                    HUD.InventoryCategory.CHARACTER:
+                        if (User.InventoryCharacter != null)
+                            User.AddItem(true);
+                        break;
+                }
             }
 
             if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
@@ -419,8 +470,18 @@ namespace WorldCreator
                     Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
                 }
 
-                if (User.InventoryItem != null)
-                    User.AddItem(false);
+                switch (HUD.Category)
+                {
+                    case HUD.InventoryCategory.DESCRIBED:
+                        if (User.InventoryItem != null)
+                            User.AddItem(true);
+                        break;
+                    case
+                    HUD.InventoryCategory.CHARACTER:
+                        if (User.InventoryCharacter != null)
+                            User.AddItem(true);
+                        break;
+                }
             }
 
             if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_C))

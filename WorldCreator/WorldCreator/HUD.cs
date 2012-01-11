@@ -60,7 +60,7 @@ namespace WorldCreator
                 }
             }
 
-            public void SetCharacter(Character character)
+            public void SetCharacter(CharacterProfile character)
             {
                 if (character != null)
                 {
@@ -76,7 +76,7 @@ namespace WorldCreator
         }
 
 		public List<DescribedProfile> I = Items.I.Values.ToList<DescribedProfile>();  // UHUHUHUHAHAHAHA!!!!!!!!!! <<<+==========
-        public List<Character> C = NPCManager.NPCs.Values.ToList<Character>();
+        public List<CharacterProfile> C = CharacterProfileManager.C.Values.ToList<CharacterProfile>();
 
         public const int SlotsCount = 19;
         const float SlotsSpacing = 0.01f;
@@ -103,7 +103,7 @@ namespace WorldCreator
         public SimpleQuad ChosenItemPicture;
         public TextLabel ChosenItemLabel;
 
-        public InventoryCategory Category = InventoryCategory.CHARACTER;
+        public InventoryCategory Category = InventoryCategory.DESCRIBED;
 
 		public SimpleQuad GravityBg;
 		public TextLabel GravityLabel;
@@ -194,6 +194,13 @@ namespace WorldCreator
             }
         }
 
+        public void UnselectAll()
+        {
+            foreach (Slot S in Slots)
+                if (S.isSelected)
+                    S.isSelected = false;
+        }
+
 		public void UpdateGravityLabel(string what, ColourValue color)
 		{
 			GravityLabel.SetColor(color, color);
@@ -227,7 +234,7 @@ namespace WorldCreator
         {
             if (Category == InventoryCategory.CHARACTER)
             {
-                //DescriptionLabel.Caption = C[SelectedOne].Profile.DisplayName;
+                //DescriptionLabel.Caption = C[SelectedOne].DisplayName;
 
                 SelectedPicture.Panel.MaterialName = "QuadMaterial";
             }

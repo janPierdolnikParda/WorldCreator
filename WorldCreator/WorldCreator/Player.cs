@@ -17,7 +17,7 @@ namespace WorldCreator
         public MOIS.MouseState_NativePtr Mysz;
 
         public DescribedProfile InventoryItem;
-        public Character InventoryCharacter;
+        public CharacterProfile InventoryCharacter;
 
         public Vector3 AimPosition;
 
@@ -75,7 +75,7 @@ namespace WorldCreator
                     break;
 
                 case HUD.InventoryCategory.CHARACTER:
-                    Character newCharacter = InventoryCharacter;
+                    Character newCharacter = new Character(InventoryCharacter);
                     if (Left)
                         newCharacter.Position = AimPosition;
                     else
