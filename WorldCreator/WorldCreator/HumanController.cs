@@ -29,7 +29,7 @@ namespace WorldCreator
         public HumanControllerState State;
 
         public Vector3 FocusedObjectPos;
-		public Quaternion FocusedObjectRot;
+		public Vector3 FocusedObjectRot;
 
         HUD HUD;
 
@@ -231,7 +231,7 @@ namespace WorldCreator
                     break;
 
                 case GrabOrRotateAxis.Y:
-                    FocusedObjectPos.y += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+                    FocusedObjectPos.y += -Engine.Singleton.Mouse.MouseState.Y.rel * 0.01f;
                     break;
 
                 case GrabOrRotateAxis.Z:
@@ -244,9 +244,11 @@ namespace WorldCreator
 
         private void HandleRotate()
         {
-			User.FocusedObject.Orientation = FocusedObjectRot;
-			User.FocusedObject.Position = PositionBefore;
+            RotateObject();
 
+            User.FocusedObject.Position = PositionBefore;
+
+            FocusedObjectRot = Vector3.ZERO;
 
 			if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
 			{
@@ -289,17 +291,40 @@ namespace WorldCreator
 			{
 				case GrabOrRotateAxis.X:
 					//FocusedObjectPos.x += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
-					FocusedObjectRot.x += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+					FocusedObjectRot.x += -Engine.Singleton.Mouse.MouseState.X.rel * 0.1f;
 					break;
 
 				case GrabOrRotateAxis.Y:
-					FocusedObjectRot.y += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+					FocusedObjectRot.y += -Engine.Singleton.Mouse.MouseState.X.rel * 0.1f;
 					break;
 
 				case GrabOrRotateAxis.Z:
-					FocusedObjectRot.z += -Engine.Singleton.Mouse.MouseState.X.rel * 0.01f;
+					FocusedObjectRot.z += -Engine.Singleton.Mouse.MouseState.X.rel * 0.1f;
 					break;
 			}
+        }
+
+        private void RotateObject()
+        {
+            Quaternion rotation = Quaternion.IDENTITY;
+
+            switch (ActualAxis)
+            {
+                case GrabOrRotateAxis.X:
+                    rotation.FromAngleAxis(new Degree(FocusedObjectRot.x), Vector3.UNIT_X);
+                    User.FocusedObject.Orientation *= rotation;
+                    break;
+
+                case GrabOrRotateAxis.Y:
+                    rotation.FromAngleAxis(new Degree(FocusedObjectRot.y), Vector3.UNIT_Y);
+                    User.FocusedObject.Orientation *= rotation;
+                    break;
+
+                case GrabOrRotateAxis.Z:
+                    rotation.FromAngleAxis(new Degree(FocusedObjectRot.z), Vector3.UNIT_Z);
+                    User.FocusedObject.Orientation *= rotation;
+                    break;
+            }
         }
 
         private void HandleMovement()                             // @@ funkcja odpowiedzialna za całokształt poruszania się
