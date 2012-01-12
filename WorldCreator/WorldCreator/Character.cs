@@ -33,41 +33,32 @@ namespace WorldCreator
             Node = Engine.Singleton.SceneManager.RootSceneNode.CreateChildSceneNode();
             Node.AttachObject(Entity);
 
-            Vector3 scaledSize = Entity.BoundingBox.HalfSize * Profile.BodyScaleFactor;
+           // Vector3 scaledSize = Entity.BoundingBox.HalfSize * Profile.BodyScaleFactor;
 
-            ConvexCollision collision = new MogreNewt.CollisionPrimitives.Capsule(
-                Engine.Singleton.NewtonWorld,
-                
-                System.Math.Min(scaledSize.x, scaledSize.z),
-           
-                scaledSize.y * 2,
-                
-                Vector3.UNIT_X.GetRotationTo(Vector3.UNIT_Y),
-                Engine.Singleton.GetUniqueBodyId());
-
-
-
+			ConvexCollision collision = new MogreNewt.CollisionPrimitives.ConvexHull(Engine.Singleton.NewtonWorld,
+				Node,
+				Quaternion.IDENTITY,
+				0.1f,
+				Engine.Singleton.GetUniqueBodyId());
 
             Vector3 inertia, offset;
             collision.CalculateInertialMatrix(out inertia, out offset);
-
-           
 
 			Inertia = inertia;
 
             Body = new Body(Engine.Singleton.NewtonWorld, collision, true);
             Body.AttachNode(Node);
             Body.SetMassMatrix(Profile.BodyMass, inertia * Profile.BodyMass);
-            Body.AutoSleep = false;
+            //Body.AutoSleep = false;
 
-            Body.Transformed += BodyTransformCallback;
+            //Body.Transformed += BodyTransformCallback;
             Body.ForceCallback += BodyForceCallback;
 
             Body.UserData = this;
             Body.MaterialGroupID = Engine.Singleton.MaterialManager.CharacterMaterialID;
 
-            Joint upVector = new MogreNewt.BasicJoints.UpVector(
-            Engine.Singleton.NewtonWorld, Body, Vector3.UNIT_Y);
+            //Joint upVector = new MogreNewt.BasicJoints.UpVector(
+           // Engine.Singleton.NewtonWorld, Body, Vector3.UNIT_Y);
 
             collision.Dispose();
 
@@ -82,9 +73,9 @@ namespace WorldCreator
 
         public void BodyForceCallback(Body body, float timeStep, int threadIndex)
         {
-            Vector3 force = (Velocity - Body.Velocity * new Vector3(1, 0, 1))
-                * Profile.BodyMass * Engine.FixedFPS;
-            Body.Velocity = Velocity * new Vector3(1, 0, 1) + Body.Velocity * Vector3.UNIT_Y;
+          //  Vector3 force = (Velocity - Body.Velocity * new Vector3(1, 0, 1))
+           //     * Profile.BodyMass * Engine.FixedFPS;
+         //   Body.Velocity = Velocity * new Vector3(1, 0, 1) + Body.Velocity * Vector3.UNIT_Y;
         }
 
         public override void Update()

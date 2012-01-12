@@ -35,11 +35,13 @@ namespace WorldCreator
             Mysz.height = Engine.Singleton.Camera.Viewport.ActualHeight;
             Mysz.width = Engine.Singleton.Camera.Viewport.ActualWidth;
 
+			float length = 15.0f; 
+
             AimPosition = new Vector3();
-            AimPosition.x = (float) System.Math.Sin((double)-Camera.getY().ValueRadians) * 5.0f;
+            AimPosition.x = (float) System.Math.Sin((double)-Camera.getY().ValueRadians) * length;
             AimPosition.x = (float)System.Math.Cos((double)Camera.getX().ValueRadians) * AimPosition.x + Camera.Position.x;
-            AimPosition.y = (float) System.Math.Sin((double)Camera.getX().ValueRadians) * 5.0f + Camera.Position.y;
-            AimPosition.z = (float) System.Math.Cos((double)Camera.getY().ValueRadians) * -5.0f;
+            AimPosition.y = (float) System.Math.Sin((double)Camera.getX().ValueRadians) * length + Camera.Position.y;
+            AimPosition.z = (float) System.Math.Cos((double)Camera.getY().ValueRadians) * -length;
             AimPosition.z = (float)System.Math.Cos((double)Camera.getX().ValueRadians) * AimPosition.z + Camera.Position.z;
 
             if (Engine.Singleton.HumanController.State == HumanController.HumanControllerState.FREE)
@@ -53,7 +55,7 @@ namespace WorldCreator
                     raycast.SortContacts();
                     AimPosition = Camera.Position
                       + (AimPosition - Camera.Position) * raycast.Contacts[0].Distance
-                      + raycast.Contacts[0].Normal * 0.05f;
+                      + raycast.Contacts[0].Normal * 0.01f * length;
 
                     if (raycast.Contacts[0].Body.UserData is GameObject)
                         FocusedObject = raycast.Contacts[0].Body.UserData as GameObject;

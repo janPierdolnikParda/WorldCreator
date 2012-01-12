@@ -29,7 +29,7 @@ namespace WorldCreator
             {
                 BgQuad = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", left, top, Width, Size, new ColourValue(1, 1, 1), 1);
                 BlueQuad = Engine.Singleton.Labeler.NewSimpleQuad("HighlightBlueMaterial", left, top, Width, Size, new ColourValue(1, 1, 1), 3);
-                ItemLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.02f, new ColourValue(0, 0, 0), new ColourValue(0, 0, 0), 2);
+                ItemLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.02f, ColourValue.White, ColourValue.Black, 2);
                 ItemLabel.SetPosition(left, top + 0.015f);
 
                 BlueQuad.IsVisible = false;
@@ -93,6 +93,8 @@ namespace WorldCreator
         public SimpleQuad InventoryBg;
         public SimpleQuad ArrowDown;
         public SimpleQuad ArrowUp;
+		public SimpleQuad ArrowLeft;
+		public SimpleQuad ArrowRight;
 
         public SimpleQuad MouseCursor;
 
@@ -104,6 +106,9 @@ namespace WorldCreator
 
 		public SimpleQuad GravityBg;
 		public TextLabel GravityLabel;
+
+		public SimpleQuad CategoryBg;
+		public TextLabel CategoryLabel;
 
         bool _isVisible;
 
@@ -141,6 +146,10 @@ namespace WorldCreator
             ArrowDown = Engine.Singleton.Labeler.NewSimpleQuad("DownArrow", 0.2f, 0.7f, Engine.Singleton.GetFloatFromPxWidth(64), Engine.Singleton.GetFloatFromPxHeight(128), ColourValue.White, 2);
             ArrowUp = Engine.Singleton.Labeler.NewSimpleQuad("UpArrow", 0.2f, 0.1f, Engine.Singleton.GetFloatFromPxWidth(64), Engine.Singleton.GetFloatFromPxHeight(128), ColourValue.Black, 2);
             MouseCursor = Engine.Singleton.Labeler.NewSimpleQuad("Kursor", 0.0f, 0.0f, Engine.Singleton.GetFloatFromPxWidth(32), Engine.Singleton.GetFloatFromPxHeight(32), new ColourValue(1, 1, 1), 4);
+
+			CategoryBg = Engine.Singleton.Labeler.NewSimpleQuad("QuadMaterial", 0.35f, 0.02f, 0.45f, 0.1f, new ColourValue(1, 1, 1), 1);
+			CategoryLabel = Engine.Singleton.Labeler.NewTextLabel("Primitive", 0.05f, new ColourValue(0.7f, 0.4f, 0), new ColourValue(1, 1.0f, 0.6f), 2);
+			CategoryLabel.SetPosition(0.5f, 0.04f);
 
             KtoraStrona = 0;
             SelectedOne = -1;
@@ -217,6 +226,7 @@ namespace WorldCreator
                             Slots[i - KtoraStrona * SlotsCount].SetItem(I.ElementAt(i));
                         else
                             Slots[i - KtoraStrona * SlotsCount].SetItem(null);
+						CategoryLabel.Caption = "Items";
                         break;
 
                     case InventoryCategory.CHARACTER:
@@ -224,6 +234,8 @@ namespace WorldCreator
                             Slots[i - KtoraStrona * SlotsCount].SetCharacter(C.ElementAt(i));
                         else
                             Slots[i - KtoraStrona * SlotsCount].SetCharacter(null);
+
+						CategoryLabel.Caption = "Characters";
                         break;
                 }
 
@@ -281,6 +293,9 @@ namespace WorldCreator
 
 				GravityBg.IsVisible = !value;
 				GravityLabel.IsVisible = !value;
+
+				CategoryBg.IsVisible = value;
+				CategoryLabel.IsVisible = value;
 
                 if (value)
                 {

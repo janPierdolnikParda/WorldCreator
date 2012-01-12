@@ -142,7 +142,7 @@ namespace WorldCreator
                 HUD.UpdateDescription();
             }
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_LEFT))
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_A))
             {
                 switch (HUD.Category)
                 {
@@ -158,7 +158,7 @@ namespace WorldCreator
                 HUD.UpdateView();
             }
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_RIGHT))
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_D))
             {
                 switch (HUD.Category)
                 {
@@ -241,14 +241,23 @@ namespace WorldCreator
                 {
                     Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
                 }
-
 				
-				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+				switch (User.FocusedObject.GetType().ToString())
+				{
+					case "WorldCreator.Described":
+						(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+						(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
+						break;
+					case "WorldCreator.Character":
+						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.CharacterMaterialID;
+						(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
+						break;
+				}
+
 				User.FocusedObject.Position = PositionBefore;
 
-				(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
-				(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
-               
 				SwitchState(HumanControllerState.FREE);
             }
 
@@ -259,10 +268,20 @@ namespace WorldCreator
                     Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
                 }
 
-                (User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
-				
-				(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
-				(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
+				switch (User.FocusedObject.GetType().ToString())
+				{
+					case "WorldCreator.Described":
+						(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+						(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
+						break;
+					case "WorldCreator.Character":
+						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.CharacterMaterialID;
+						(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
+						break;
+				}
+
 
                 SwitchState(HumanControllerState.FREE);
             }
@@ -291,6 +310,11 @@ namespace WorldCreator
                     break;
             }
 
+			if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_R))
+			{				
+				PositionBefore = User.FocusedObject.Position;
+				SwitchState(HumanControllerState.ROTATE);
+			}
            
         }
 
@@ -309,14 +333,21 @@ namespace WorldCreator
 					Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
 				}
 
-
-				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+				switch (User.FocusedObject.GetType().ToString())
+				{
+					case "WorldCreator.Described":
+						(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+						(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
+						break;
+					case "WorldCreator.Character":
+						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.CharacterMaterialID;
+						(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
+						break;
+				}
 				
-
 				User.FocusedObject.Orientation = RotationBefore;
-				(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
-				(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
-
 				SwitchState(HumanControllerState.FREE);
 			}
 
@@ -327,9 +358,20 @@ namespace WorldCreator
 					Engine.Singleton.Mouse.Capture();               //petla, zeby nie klikal mi milion razy, tylko raz :)
 				}
 
-				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
-				(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
-				(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
+				switch (User.FocusedObject.GetType().ToString())
+				{
+					case "WorldCreator.Described":
+						(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
+						(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
+						break;
+					case "WorldCreator.Character":
+						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.CharacterMaterialID;
+						(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
+						break;
+				}
+
 				SwitchState(HumanControllerState.FREE);
 			}
 
@@ -357,6 +399,15 @@ namespace WorldCreator
 					FocusedObjectRot.z += -Engine.Singleton.Mouse.MouseState.X.rel * 0.1f;
 					break;
 			}
+
+			if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_G))
+			{
+
+				RotationBefore = User.FocusedObject.Orientation;
+				FocusedObjectPos = User.FocusedObject.Position;
+				SwitchState(HumanControllerState.GRAB);
+			}
+
         }
 
         private void RotateObject()
@@ -506,8 +557,17 @@ namespace WorldCreator
 				float zr = User.FocusedObject.Orientation.z;
 
 				RotationBefore = User.FocusedObject.Orientation;
+
+				switch (User.FocusedObject.GetType().ToString())
+				{
+					case "WorldCreator.Described":
+						(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+						break;
+					case "WorldCreator.Character":
+						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+						break;
+				}
 				
-				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
 
 				
                 FocusedObjectPos = User.FocusedObject.Position;
@@ -529,7 +589,15 @@ namespace WorldCreator
 
 				PositionBefore = new Vector3(xg, yg, zg);
 
-				(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+				switch (User.FocusedObject.GetType().ToString())
+				{
+					case "WorldCreator.Described":
+						(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+						break;
+					case "WorldCreator.Character":
+						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+						break;
+				}
 
 				SwitchState(HumanControllerState.ROTATE);
 			}
