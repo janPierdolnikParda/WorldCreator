@@ -174,7 +174,7 @@ namespace WorldCreator
                     {
                         ChosenItemLabel.Caption = User.InventoryItem.DisplayName;
 
-                        if (User.InventoryItem.InventoryPictureMaterial != null)
+                        if (User.InventoryItem.InventoryPictureMaterial != null && I[SelectedOne].InventoryPictureMaterial != "-")
                             ChosenItemPicture.Panel.MaterialName = User.InventoryItem.InventoryPictureMaterial;
                         else
                             ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
@@ -262,7 +262,9 @@ namespace WorldCreator
                     DescriptionLabel.Caption += "\nObrazenia: "
                         + (I[SelectedOne] as ItemSword).Damage.ToString();
 
-                if (I[SelectedOne].InventoryPictureMaterial != null)
+				DescriptionLabel.Caption += "\nMasa: " + I[SelectedOne].Mass;
+
+                if (I[SelectedOne].InventoryPictureMaterial != null && I[SelectedOne].InventoryPictureMaterial != "-")
                     SelectedPicture.Panel.MaterialName = I[SelectedOne].InventoryPictureMaterial;
                 else
                     SelectedPicture.Panel.MaterialName = "QuadMaterial";

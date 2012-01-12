@@ -246,13 +246,13 @@ namespace WorldCreator
 				{
 					case "WorldCreator.Described":
 						(User.FocusedObject as Described).Body.MaterialGroupID = Engine.Singleton.MaterialManager.DescribedMaterialID;
-						(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
-						(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
+						//(User.FocusedObject as Described).Body.SetForce(Vector3.ZERO);
+						//(User.FocusedObject as Described).Body.Velocity = Vector3.ZERO;
 						break;
 					case "WorldCreator.Character":
 						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.CharacterMaterialID;
-						(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
-						(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
+						//(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
+						//(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
 						break;
 				}
 
@@ -580,7 +580,6 @@ namespace WorldCreator
 				float y = User.FocusedObject.Orientation.y;
 				float z = User.FocusedObject.Orientation.z;
 
-				//RotationBefore = new Quaternion(new Vector3(x, 0, 0), new Vector3(0, y, 0), new Vector3(0, 0, z));
 				RotationBefore = User.FocusedObject.Orientation;
 
 				float xg = User.FocusedObject.Position.x;					//// pozycja musi być stała żeby nie spadało podczas rotejta
@@ -644,11 +643,11 @@ namespace WorldCreator
 					switch (d.GetType().ToString())
 					{
 						case "WorldCreator.Described":
-							(d as Described).Body.SetMassMatrix(0, (d as Described).Profile.Mass * (d as Described).Inertia);
+							(d as Described).Body.SetMassMatrix(0, Vector3.ZERO);
 							
 							break;
 						case "WorldCreator.Character":
-							(d as Character).Body.SetMassMatrix(0, (d as Character).Profile.BodyMass * (d as Character).Inertia);
+							(d as Character).Body.SetMassMatrix(0, Vector3.ZERO);
 							break;
 
 					}
