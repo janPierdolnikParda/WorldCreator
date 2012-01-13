@@ -77,6 +77,7 @@ namespace WorldCreator
 
 		public List<DescribedProfile> I = Items.I.Values.ToList<DescribedProfile>();
         public List<CharacterProfile> C = CharacterProfileManager.C.Values.ToList<CharacterProfile>();
+        public List<CharacterProfile> E = CharacterProfileManager.E.Values.ToList<CharacterProfile>();
 
         public const int SlotsCount = 19;
         const float SlotsSpacing = 0.01f;
@@ -200,6 +201,20 @@ namespace WorldCreator
                         ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
                     }
                     break;
+
+                case InventoryCategory.ENEMY:
+                    if (User.InventoryCharacter != null)
+                    {
+                        ChosenItemLabel.Caption = User.InventoryCharacter.DisplayName;
+                        ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+                    }
+
+                    else
+                    {
+                        ChosenItemLabel.Caption = "";
+                        ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
+                    }
+                    break;
             }
         }
 
@@ -237,6 +252,14 @@ namespace WorldCreator
 
 						CategoryLabel.Caption = "Characters";
                         break;
+
+                    case InventoryCategory.ENEMY:
+                        if (i < E.Count)
+                            Slots[i - KtoraStrona * SlotsCount].SetCharacter(C.ElementAt(i));
+                        else
+                            Slots[i - KtoraStrona * SlotsCount].SetCharacter(null);
+                        CategoryLabel.Caption = "Enemies";
+                        break;
                 }
 
             MouseCursor.SetDimensions(Engine.Singleton.GetFloatFromPxWidth(User.Mysz.X.abs), Engine.Singleton.GetFloatFromPxHeight(User.Mysz.Y.abs), Engine.Singleton.GetFloatFromPxWidth(32), Engine.Singleton.GetFloatFromPxHeight(32));
@@ -244,14 +267,14 @@ namespace WorldCreator
 
         public void UpdateDescription()
         {
-            if (Category == InventoryCategory.CHARACTER)
+            if (Category == InventoryCategory.CHARACTER && Category == InventoryCategory.ENEMY)
             {
                 //DescriptionLabel.Caption = C[SelectedOne].DisplayName;
 
                 SelectedPicture.Panel.MaterialName = "QuadMaterial";
             }
 
-            if (SelectedOne != -1 && SelectedOne < I.Count && Category != InventoryCategory.CHARACTER)
+            else if (SelectedOne != -1 && SelectedOne < I.Count && Category != InventoryCategory.CHARACTER && Category != InventoryCategory.ENEMY)
             {
                 DescriptionLabel.Caption =
                     I[SelectedOne].DisplayName

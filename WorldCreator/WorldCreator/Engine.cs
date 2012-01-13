@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Mogre;
 using MogreNewt;
+using System.Xml;
+using System.IO;
 
 namespace WorldCreator
 {
@@ -146,6 +148,65 @@ namespace WorldCreator
 
             }
             WindowEventUtilities.MessagePump();
+        }
+
+        public void Save()
+        {
+            XmlTextWriter w = new XmlTextWriter("Media\\Wololo.xml", (Encoding) null);
+
+            w.WriteStartElement("items");
+
+            foreach (GameObject GO in Engine.Singleton.ObjectManager.Objects)
+            {
+                if (GO.GetType().ToString() == "WorldCreator.Described" && (GO as Described).Profile.ProfileName[0] != 's')
+                {
+                    w.WriteStartElement("item");
+                    w.WriteElementString("DescribedProfile", (GO as Described).Profile.ProfileName);
+                    w.WriteElementString("Position_x", (GO as Described).Position.x.ToString());
+                    w.WriteElementString("Position_y", (GO as Described).Position.y.ToString());
+                    w.WriteElementString("Position_z", (GO as Described).Position.z.ToString());
+                    w.WriteElementString("Orientation_w", (GO as Described).Orientation.w.ToString());
+                    w.WriteElementString("Orientation_x", (GO as Described).Orientation.x.ToString());
+                    w.WriteElementString("Orientation_y", (GO as Described).Orientation.y.ToString());
+                    w.WriteElementString("Orientation_z", (GO as Described).Orientation.z.ToString());
+                    w.WriteEndElement();
+                }
+            }
+
+            w.WriteEndElement();
+            w.Flush();
+            w.Close();
+        }
+
+        public void Load()
+        {
+            while (Engine.Singleton.ObjectManager.Objects.Count > 0)
+                Engine.Singleton.ObjectManager.Destroy(Engine.Singleton.ObjectManager.Objects[0]);
+
+            if (System.IO.File.Exists("Media\\Wololo.xml"))
+            {
+                XmlDocument File = new XmlDocument();
+                File.Load("Media\\Wololo.xml");
+
+                XmlElement root = File.DocumentElement;
+                XmlNodeList Items = root.SelectNodes("//items/item");
+
+                foreach (XmlNode item in Items)
+                {
+                    Described newDescribed = new Described(WorldCreator.Items.I[item["DescribedProfile"].InnerText]);
+                    Vector3 Position = new Vector3();
+
+                    Quaternion Orientation = new Quaternion(float.Parse(item["Orientation_w"].InnerText), float.Parse(item["Orientation_x"].InnerText), float.Parse(item["Orientation_y"].InnerText), float.Parse(item["Orientation_z"].InnerText));
+                    newDescribed.Orientation = Orientation;
+                    
+                    Position.x = float.Parse(item["Position_x"].InnerText);
+                    Position.y = float.Parse(item["Position_y"].InnerText);
+                    Position.z = float.Parse(item["Position_z"].InnerText);
+                    newDescribed.Position = Position;
+
+                    Engine.Singleton.ObjectManager.Add(newDescribed);
+                }
+            }
         }
 
         public bool IsKeyTyped(MOIS.KeyCode code)

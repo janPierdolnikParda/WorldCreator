@@ -95,6 +95,22 @@ namespace WorldCreator
                  //   Console.WriteLine(Camera.Position.ToString());
                     Engine.Singleton.ObjectManager.Add(newCharacter);
                     break;
+
+                case HUD.InventoryCategory.ENEMY:
+                    Enemy newEnemy = new Enemy(InventoryCharacter);
+                    if (Left)
+                        newEnemy.Position = AimPosition;
+                    else
+                        newEnemy.Position = Camera.Position;
+					
+					if (!Engine.Singleton.HumanController.Gravity)
+						newEnemy.Body.SetMassMatrix(0, Vector3.ZERO);
+
+                 //   Console.WriteLine(newCharacter.Position.ToString());
+                 //   Console.WriteLine(AimPosition.ToString());
+                 //   Console.WriteLine(Camera.Position.ToString());
+                    Engine.Singleton.ObjectManager.Add(newEnemy);
+                    break;
             }
 			
         }

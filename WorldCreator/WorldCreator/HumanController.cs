@@ -107,6 +107,12 @@ namespace WorldCreator
                                     HUD.UpdateChosenItem();
                                     SwitchState(HumanControllerState.FREE);
                                     break;
+
+                                case HUD.InventoryCategory.ENEMY:
+                                    User.InventoryCharacter = HUD.E[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
+                                    HUD.UpdateChosenItem();
+                                    SwitchState(HumanControllerState.FREE);
+                                    break;
                             }
                         }
 
@@ -149,6 +155,10 @@ namespace WorldCreator
                     case HUD.InventoryCategory.CHARACTER:
                         HUD.Category = HUD.InventoryCategory.DESCRIBED;
                         break;
+
+                    case HUD.InventoryCategory.ENEMY:
+                        HUD.Category = HUD.InventoryCategory.CHARACTER;
+                        break;
                 }
 
                 HUD.SelectedOne = -1;
@@ -164,6 +174,10 @@ namespace WorldCreator
                 {
                     case HUD.InventoryCategory.DESCRIBED:
                         HUD.Category = HUD.InventoryCategory.CHARACTER;
+                        break;
+
+                    case HUD.InventoryCategory.CHARACTER:
+                        HUD.Category = HUD.InventoryCategory.ENEMY;
                         break;
                 }
 
@@ -254,6 +268,9 @@ namespace WorldCreator
 						//(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
 						//(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
 						break;
+                    case "WorldCreator.Enemy":
+                        (User.FocusedObject as Enemy).Body.MaterialGroupID = Engine.Singleton.MaterialManager.EnemyMaterialID;
+                        break;
 				}
 
 				User.FocusedObject.Position = PositionBefore;
@@ -280,6 +297,11 @@ namespace WorldCreator
 						(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
 						(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
 						break;
+                    case "WorldCreator.Enemy":
+                        (User.FocusedObject as Enemy).Body.MaterialGroupID = Engine.Singleton.MaterialManager.EnemyMaterialID;
+						(User.FocusedObject as Enemy).Body.SetForce(Vector3.ZERO);
+						(User.FocusedObject as Enemy).Body.Velocity = Vector3.ZERO;
+                        break;
 				}
 
 
@@ -345,6 +367,11 @@ namespace WorldCreator
 						(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
 						(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
 						break;
+                    case "WorldCreator.Enemy":
+                        (User.FocusedObject as Enemy).Body.MaterialGroupID = Engine.Singleton.MaterialManager.EnemyMaterialID;
+                        (User.FocusedObject as Enemy).Body.SetForce(Vector3.ZERO);
+                        (User.FocusedObject as Enemy).Body.Velocity = Vector3.ZERO;
+                        break;
 				}
 				
 				User.FocusedObject.Orientation = RotationBefore;
@@ -370,6 +397,11 @@ namespace WorldCreator
 						(User.FocusedObject as Character).Body.SetForce(Vector3.ZERO);
 						(User.FocusedObject as Character).Body.Velocity = Vector3.ZERO;
 						break;
+                    case "WorldCreator.Enemy":
+                        (User.FocusedObject as Enemy).Body.MaterialGroupID = Engine.Singleton.MaterialManager.EnemyMaterialID;
+                        (User.FocusedObject as Enemy).Body.SetForce(Vector3.ZERO);
+                        (User.FocusedObject as Enemy).Body.Velocity = Vector3.ZERO;
+                        break;
 				}
 
 				SwitchState(HumanControllerState.FREE);
@@ -488,6 +520,9 @@ namespace WorldCreator
                     case HUD.InventoryCategory.CHARACTER:
                         User.InventoryCharacter = null;
                         break;
+                    case HUD.InventoryCategory.ENEMY:
+                        User.InventoryCharacter = null;
+                        break;
                 }
              
                 HUD.UpdateChosenItem();
@@ -511,6 +546,10 @@ namespace WorldCreator
                         if (User.InventoryCharacter != null)
                             User.AddItem(true);
                         break;
+                    case HUD.InventoryCategory.ENEMY:
+                        if (User.InventoryCharacter != null)
+                            User.AddItem(true);
+                        break;
                 }
             }
 
@@ -529,6 +568,10 @@ namespace WorldCreator
                         break;
                     case
                     HUD.InventoryCategory.CHARACTER:
+                        if (User.InventoryCharacter != null)
+                            User.AddItem(false);
+                        break;
+                    case HUD.InventoryCategory.ENEMY:
                         if (User.InventoryCharacter != null)
                             User.AddItem(false);
                         break;
@@ -566,6 +609,9 @@ namespace WorldCreator
 					case "WorldCreator.Character":
 						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
 						break;
+                    case "WorldCreator.Enemy":
+                        (User.FocusedObject as Enemy).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+                        break;
 				}
 				
 
@@ -596,6 +642,9 @@ namespace WorldCreator
 					case "WorldCreator.Character":
 						(User.FocusedObject as Character).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
 						break;
+                    case "WorldCreator.Enemy":
+                        (User.FocusedObject as Enemy).Body.MaterialGroupID = Engine.Singleton.MaterialManager.NoColID;
+                        break;
 				}
 
 				SwitchState(HumanControllerState.ROTATE);
@@ -649,6 +698,9 @@ namespace WorldCreator
 						case "WorldCreator.Character":
 							(d as Character).Body.SetMassMatrix(0, Vector3.ZERO);
 							break;
+                        case "WorldCreator.Enemy":
+                            (d as Enemy).Body.SetMassMatrix(0, Vector3.ZERO);
+                            break;
 
 					}
 				}
@@ -668,7 +720,10 @@ namespace WorldCreator
 						case "WorldCreator.Character":
 							(d as Character).Body.SetMassMatrix((d as Character).Profile.BodyMass, (d as Character).Profile.BodyMass * (d as Character).Inertia);
 							break;
-					}
+                        case "WorldCreator.Enemy":
+                            (d as Enemy).Body.SetMassMatrix((d as Enemy).Profile.BodyMass, (d as Enemy).Profile.BodyMass * (d as Enemy).Inertia);
+                            break;
+                    }
 				}
 				
 				
