@@ -11,10 +11,12 @@ namespace WorldCreator
         static public CharacterProfile character;
 
         static public Dictionary<String, CharacterProfile> C;
+        static public Dictionary<String, CharacterProfile> E;
 
 		public CharacterProfileManager()
 		{
 			C = new Dictionary<String, CharacterProfile>();
+            E = new Dictionary<String, CharacterProfile>();
 			character = new CharacterProfile();
 			character.BodyMass = 70;
 			character.BodyScaleFactor = new Vector3(1.5f, 1, 1.5f);
@@ -25,6 +27,9 @@ namespace WorldCreator
 			character.DisplayNameOffset = new Vector3(0, 1, 0);
 			character.DisplayName = "Andrzej";
 			C.Add("cAndrzej", character);
+
+            character.DisplayName = "ADAM!";
+            E.Add("eAdam", character);
 		}
     }
 }
