@@ -16,6 +16,7 @@ namespace WorldCreator
         public Single Mass;
         public Boolean IsPickable;
         public String InventoryPictureMaterial;
+        public String ProfileName;
         public bool IsEquipment;
 
 

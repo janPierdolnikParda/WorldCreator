@@ -9,6 +9,7 @@ namespace WorldCreator
 {
     class Level
     {
+        public String Name;
         Entity GraphicsEntity;
         SceneNode GraphicsNode;
 
@@ -45,7 +46,9 @@ namespace WorldCreator
         }
 
         public void LoadLevel(String LevelName, bool isTheSame = false)  //////////@@@@@@@@@@@@@@@@@@ tu pewnie jeszcze navmesza
-        {                                                               // trza będzie walnąć, żeby wszystko ładnie się razem ładowało
+        {
+            this.Name = LevelName;
+                                                               // trza będzie walnąć, żeby wszystko ładnie się razem ładowało
             String Name = LevelName + ".mesh";
             //NavMeshName = "Media/nav/" + NavMeshName + ".obj";
             SetGraphicsMesh(Name);
@@ -61,6 +64,8 @@ namespace WorldCreator
                 LevelName += "Col.mesh";
                 SetCollisionMesh(LevelName);
             }
+
+            Engine.Singleton.Load();
         }
 
         public void DeleteLevel()

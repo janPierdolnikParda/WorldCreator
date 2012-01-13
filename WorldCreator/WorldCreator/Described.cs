@@ -103,6 +103,39 @@ namespace WorldCreator
             set { Profile.DisplayNameOffset = value; }
         }
 
+        public Radian getZ()
+        {
+            Matrix3 orientMatrix;
+            orientMatrix = Orientation.ToRotationMatrix();
+
+            Radian yRad, pRad, rRad;
+            orientMatrix.ToEulerAnglesYXZ(out yRad, out pRad, out rRad);
+
+            return rRad;
+        }
+
+        public Radian getY()
+        {
+            Matrix3 orientMatrix;
+            orientMatrix = Orientation.ToRotationMatrix();
+
+            Radian yRad, pRad, rRad;
+            orientMatrix.ToEulerAnglesYXZ(out yRad, out pRad, out rRad);
+
+            return yRad;
+        }
+
+        public Radian getX()
+        {
+            Matrix3 orientMatrix;
+            orientMatrix = Orientation.ToRotationMatrix();
+
+            Radian yRad, pRad, rRad;
+            orientMatrix.ToEulerAnglesYXZ(out yRad, out pRad, out rRad);
+
+            return pRad;
+        }
+
         public override void Destroy()
         {
             Node.DetachAllObjects();

@@ -27,7 +27,7 @@ namespace WorldCreator
             swordProfile.IsPickable = true;
             swordProfile.Damage = 1;
             swordProfile.HandleOffset = new Vector3(0, 0.3f, 0);
-			I.Add("iSword", swordProfile);
+			I.Add("sSword", swordProfile);
 
 
             XmlDocument File = new XmlDocument();
@@ -52,6 +52,7 @@ namespace WorldCreator
                     Kriper.DisplayNameOffset.x = float.Parse(item["nameoffsetx"].InnerText);                    
                     Kriper.DisplayNameOffset.y = float.Parse(item["nameoffsety"].InnerText);
                     Kriper.DisplayNameOffset.z = float.Parse(item["nameoffsetz"].InnerText);
+                    Kriper.ProfileName = item["idstring"].InnerText;
 
                     I.Add(item["idstring"].InnerText, Kriper);
                 }

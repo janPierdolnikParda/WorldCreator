@@ -58,6 +58,12 @@ namespace WorldCreator
                 if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_ESCAPE))
                     break;
 
+                if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_F1))
+                    Engine.Singleton.Save();
+
+                if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_F2))
+                    Engine.Singleton.Load();
+
 				if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_F3))
 				{
 					Engine.Singleton.NewtonDebugger.ShowDebugInformation();
