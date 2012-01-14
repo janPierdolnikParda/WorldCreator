@@ -152,7 +152,13 @@ namespace WorldCreator
 
         public void Save()
         {
-            XmlTextWriter w = new XmlTextWriter("Media\\Wololo.xml", (Encoding) null);
+            //*************************************************************//
+            //                                                             //
+            //                            ITEMY                            //
+            //                                                             //
+            //*************************************************************//
+
+            XmlTextWriter w = new XmlTextWriter("Media\\Maps\\" + CurrentLevel.Name + "\\Items.xml", (Encoding) null);
 
             w.WriteStartElement("items");
 
@@ -162,6 +168,22 @@ namespace WorldCreator
                 {
                     w.WriteStartElement("item");
                     w.WriteElementString("DescribedProfile", (GO as Described).Profile.ProfileName);
+                    w.WriteElementString("ItemSword", "");
+                    w.WriteElementString("Position_x", (GO as Described).Position.x.ToString());
+                    w.WriteElementString("Position_y", (GO as Described).Position.y.ToString());
+                    w.WriteElementString("Position_z", (GO as Described).Position.z.ToString());
+                    w.WriteElementString("Orientation_w", (GO as Described).Orientation.w.ToString());
+                    w.WriteElementString("Orientation_x", (GO as Described).Orientation.x.ToString());
+                    w.WriteElementString("Orientation_y", (GO as Described).Orientation.y.ToString());
+                    w.WriteElementString("Orientation_z", (GO as Described).Orientation.z.ToString());
+                    w.WriteEndElement();
+                }
+
+                if (GO.GetType().ToString() == "WorldCreator.Described" && (GO as Described).Profile.ProfileName[0] == 's')
+                {
+                    w.WriteStartElement("item");
+                    w.WriteElementString("ItemSword", (GO as Described).Profile.ProfileName);
+                    w.WriteElementString("DescribedProfile", "");
                     w.WriteElementString("Position_x", (GO as Described).Position.x.ToString());
                     w.WriteElementString("Position_y", (GO as Described).Position.y.ToString());
                     w.WriteElementString("Position_z", (GO as Described).Position.z.ToString());
@@ -176,6 +198,68 @@ namespace WorldCreator
             w.WriteEndElement();
             w.Flush();
             w.Close();
+
+            //*************************************************************//
+            //                                                             //
+            //                             NPCS                            //
+            //                                                             //
+            //*************************************************************//
+
+            XmlTextWriter NPCs = new XmlTextWriter("Media\\Maps\\" + CurrentLevel.Name + "\\NPCs.xml", (Encoding)null);
+
+            NPCs.WriteStartElement("npcs");
+
+            foreach (GameObject GO in Engine.Singleton.ObjectManager.Objects)
+            {
+                if (GO.GetType().ToString() == "WorldCreator.Character")
+                {
+                    NPCs.WriteStartElement("npc");
+                    NPCs.WriteElementString("ProfileName", (GO as Character).Profile.ProfileName);
+                    NPCs.WriteElementString("Position_x", (GO as Character).Position.x.ToString());
+                    NPCs.WriteElementString("Position_y", (GO as Character).Position.y.ToString());
+                    NPCs.WriteElementString("Position_z", (GO as Character).Position.z.ToString());
+                    NPCs.WriteElementString("Orientation_w", (GO as Character).Orientation.w.ToString());
+                    NPCs.WriteElementString("Orientation_x", (GO as Character).Orientation.x.ToString());
+                    NPCs.WriteElementString("Orientation_y", (GO as Character).Orientation.y.ToString());
+                    NPCs.WriteElementString("Orientation_z", (GO as Character).Orientation.z.ToString());
+                    NPCs.WriteEndElement();
+                }
+            }
+
+            NPCs.WriteEndElement();
+            NPCs.Flush();
+            NPCs.Close();
+
+            //*************************************************************//
+            //                                                             //
+            //                            ENEMY                            //
+            //                                                             //
+            //*************************************************************//
+
+            XmlTextWriter Enemies = new XmlTextWriter("Media\\Maps\\" + CurrentLevel.Name + "\\Enemies.xml", (Encoding)null);
+
+            Enemies.WriteStartElement("enemies");
+
+            foreach (GameObject GO in Engine.Singleton.ObjectManager.Objects)
+            {
+                if (GO.GetType().ToString() == "WorldCreator.Enemy")
+                {
+                    Enemies.WriteStartElement("enemy");
+                    Enemies.WriteElementString("ProfileName", (GO as Enemy).Profile.ProfileName);
+                    Enemies.WriteElementString("Position_x", (GO as Enemy).Position.x.ToString());
+                    Enemies.WriteElementString("Position_y", (GO as Enemy).Position.y.ToString());
+                    Enemies.WriteElementString("Position_z", (GO as Enemy).Position.z.ToString());
+                    Enemies.WriteElementString("Orientation_w", (GO as Enemy).Orientation.w.ToString());
+                    Enemies.WriteElementString("Orientation_x", (GO as Enemy).Orientation.x.ToString());
+                    Enemies.WriteElementString("Orientation_y", (GO as Enemy).Orientation.y.ToString());
+                    Enemies.WriteElementString("Orientation_z", (GO as Enemy).Orientation.z.ToString());
+                    Enemies.WriteEndElement();
+                }
+            }
+
+            Enemies.WriteEndElement();
+            Enemies.Flush();
+            Enemies.Close();
         }
 
         public void Load()
@@ -183,28 +267,115 @@ namespace WorldCreator
             while (Engine.Singleton.ObjectManager.Objects.Count > 0)
                 Engine.Singleton.ObjectManager.Destroy(Engine.Singleton.ObjectManager.Objects[0]);
 
-            if (System.IO.File.Exists("Media\\Wololo.xml"))
+            //*************************************************************//
+            //                                                             //
+            //                            ITEMY                            //
+            //                                                             //
+            //*************************************************************//
+
+            if (System.IO.File.Exists("Media\\Maps\\" + CurrentLevel.Name + "\\Items.xml"))
             {
                 XmlDocument File = new XmlDocument();
-                File.Load("Media\\Wololo.xml");
+                File.Load("Media\\Maps\\" + CurrentLevel.Name + "\\Items.xml");
 
                 XmlElement root = File.DocumentElement;
                 XmlNodeList Items = root.SelectNodes("//items/item");
 
                 foreach (XmlNode item in Items)
                 {
-                    Described newDescribed = new Described(WorldCreator.Items.I[item["DescribedProfile"].InnerText]);
+                    if (item["DescribedProfile"].InnerText != "")
+                    {
+                        Described newDescribed = new Described(WorldCreator.Items.I[item["DescribedProfile"].InnerText]);
+                        Vector3 Position = new Vector3();
+
+                        Quaternion Orientation = new Quaternion(float.Parse(item["Orientation_w"].InnerText), float.Parse(item["Orientation_x"].InnerText), float.Parse(item["Orientation_y"].InnerText), float.Parse(item["Orientation_z"].InnerText));
+                        newDescribed.Orientation = Orientation;
+
+                        Position.x = float.Parse(item["Position_x"].InnerText);
+                        Position.y = float.Parse(item["Position_y"].InnerText);
+                        Position.z = float.Parse(item["Position_z"].InnerText);
+                        newDescribed.Position = Position;
+
+                        Engine.Singleton.ObjectManager.Add(newDescribed);
+                    }
+
+                    if (item["ItemSword"].InnerText != "")
+                    {
+                        Described newDescribed = new Described(WorldCreator.Items.I[item["ItemSword"].InnerText]);
+                        Vector3 Position = new Vector3();
+
+                        Quaternion Orientation = new Quaternion(float.Parse(item["Orientation_w"].InnerText), float.Parse(item["Orientation_x"].InnerText), float.Parse(item["Orientation_y"].InnerText), float.Parse(item["Orientation_z"].InnerText));
+                        newDescribed.Orientation = Orientation;
+
+                        Position.x = float.Parse(item["Position_x"].InnerText);
+                        Position.y = float.Parse(item["Position_y"].InnerText);
+                        Position.z = float.Parse(item["Position_z"].InnerText);
+                        newDescribed.Position = Position;
+
+                        Engine.Singleton.ObjectManager.Add(newDescribed);
+                    }
+                }
+            }
+
+            //*************************************************************//
+            //                                                             //
+            //                            NPCs                             //
+            //                                                             //
+            //*************************************************************//
+
+            if (System.IO.File.Exists("Media\\Maps\\" + CurrentLevel.Name + "\\NPCs.xml"))
+            {
+                XmlDocument File = new XmlDocument();
+                File.Load("Media\\Maps\\" + CurrentLevel.Name + "\\NPCs.xml");
+
+                XmlElement root = File.DocumentElement;
+                XmlNodeList Items = root.SelectNodes("//npcs//npc");
+
+                foreach (XmlNode item in Items)
+                {
+                    Character newCharacter = new Character(WorldCreator.CharacterProfileManager.C[item["ProfileName"].InnerText]);
                     Vector3 Position = new Vector3();
 
                     Quaternion Orientation = new Quaternion(float.Parse(item["Orientation_w"].InnerText), float.Parse(item["Orientation_x"].InnerText), float.Parse(item["Orientation_y"].InnerText), float.Parse(item["Orientation_z"].InnerText));
-                    newDescribed.Orientation = Orientation;
-                    
+                    newCharacter.Orientation = Orientation;
+
                     Position.x = float.Parse(item["Position_x"].InnerText);
                     Position.y = float.Parse(item["Position_y"].InnerText);
                     Position.z = float.Parse(item["Position_z"].InnerText);
-                    newDescribed.Position = Position;
+                    newCharacter.Position = Position;
 
-                    Engine.Singleton.ObjectManager.Add(newDescribed);
+                    Engine.Singleton.ObjectManager.Add(newCharacter);
+                }
+            }
+
+            //*************************************************************//
+            //                                                             //
+            //                           ENEMIES                           //
+            //                                                             //
+            //*************************************************************//
+
+            if (System.IO.File.Exists("Media\\Maps\\" + CurrentLevel.Name + "\\Enemies.xml"))
+            {
+                XmlDocument File = new XmlDocument();
+                File.Load("Media\\Maps\\" + CurrentLevel.Name + "\\Enemies.xml");
+
+                XmlElement root = File.DocumentElement;
+                XmlNodeList Items = root.SelectNodes("//enemies//enemy");
+
+                foreach (XmlNode item in Items)
+                {
+                    Character newCharacter = new Character(WorldCreator.CharacterProfileManager.E[item["ProfileName"].InnerText]);
+                    Vector3 Position = new Vector3();
+
+                    Quaternion Orientation = new Quaternion(float.Parse(item["Orientation_w"].InnerText), float.Parse(item["Orientation_x"].InnerText), float.Parse(item["Orientation_y"].InnerText), float.Parse(item["Orientation_z"].InnerText));
+                    newCharacter.Orientation = Orientation;
+
+                    Position.x = float.Parse(item["Position_x"].InnerText);
+                    Position.y = float.Parse(item["Position_y"].InnerText);
+                    Position.z = float.Parse(item["Position_z"].InnerText);
+                    newCharacter.Position = Position;
+
+                    Engine.Singleton.ObjectManager.Add(newCharacter);
                 }
             }
         }

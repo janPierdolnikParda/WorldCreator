@@ -24,6 +24,8 @@ namespace WorldCreator
         public Vector3 DisplayNameOffset;
         public String PictureMaterial;
 
+        public string ProfileName;
+
         public ulong Gold;
 
 
