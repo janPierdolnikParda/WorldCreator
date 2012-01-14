@@ -255,7 +255,7 @@ namespace WorldCreator
 
                     case InventoryCategory.ENEMY:
                         if (i < E.Count)
-                            Slots[i - KtoraStrona * SlotsCount].SetCharacter(C.ElementAt(i));
+                            Slots[i - KtoraStrona * SlotsCount].SetCharacter(E.ElementAt(i));
                         else
                             Slots[i - KtoraStrona * SlotsCount].SetCharacter(null);
                         CategoryLabel.Caption = "Enemies";

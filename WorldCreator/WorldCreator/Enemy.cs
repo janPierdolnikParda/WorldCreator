@@ -219,6 +219,12 @@ namespace WorldCreator
 
         public override void Destroy()
         {
+            Node.DetachAllObjects();
+            Engine.Singleton.SceneManager.DestroySceneNode(Node);
+            Engine.Singleton.SceneManager.DestroyEntity(Entity);
+            Body.Dispose();
+            Body = null;
+
             base.Destroy();
         }
     }
