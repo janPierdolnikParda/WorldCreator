@@ -92,35 +92,26 @@ namespace WorldCreator
                 {
                     if (HUD.IsOver(S.BgQuad))
                     {
-                        if (S.isSelected && S.ItemLabel.Caption != null)
+                        if (S.isSelected)
                         {
                             switch (HUD.Category)
                             {
                                 case HUD.InventoryCategory.DESCRIBED:
-									if (HUD.I.Count > (Obieg + (HUD.KtoraStrona * HUD.SlotsCount)))
-									{
-										User.InventoryItem = HUD.I[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
-										HUD.UpdateChosenItem();
-										SwitchState(HumanControllerState.FREE);
-									}
+                                    User.InventoryItem = HUD.I[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
+                                    HUD.UpdateChosenItem();
+                                    SwitchState(HumanControllerState.FREE);
                                     break;
 
                                 case HUD.InventoryCategory.CHARACTER:
-									if (HUD.C.Count > (Obieg + (HUD.KtoraStrona * HUD.SlotsCount)))
-									{
-										User.InventoryCharacter = HUD.C[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
-										HUD.UpdateChosenItem();
-										SwitchState(HumanControllerState.FREE);
-									}
+                                    User.InventoryCharacter = HUD.C[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
+                                    HUD.UpdateChosenItem();
+                                    SwitchState(HumanControllerState.FREE);
                                     break;
 
                                 case HUD.InventoryCategory.ENEMY:
-									if (HUD.E.Count > (Obieg + (HUD.KtoraStrona * HUD.SlotsCount)))
-									{
-										User.InventoryCharacter = HUD.E[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
-										HUD.UpdateChosenItem();
-										SwitchState(HumanControllerState.FREE);
-									}
+                                    User.InventoryCharacter = HUD.E[Obieg + (HUD.KtoraStrona * HUD.SlotsCount)];
+                                    HUD.UpdateChosenItem();
+                                    SwitchState(HumanControllerState.FREE);
                                     break;
                             }
                         }

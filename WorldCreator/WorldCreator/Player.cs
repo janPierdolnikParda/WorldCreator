@@ -90,6 +90,9 @@ namespace WorldCreator
 					if (!Engine.Singleton.HumanController.Gravity)
 						newCharacter.Body.SetMassMatrix(0, Vector3.ZERO);
 
+                 //   Console.WriteLine(newCharacter.Position.ToString());
+                 //   Console.WriteLine(AimPosition.ToString());
+                 //   Console.WriteLine(Camera.Position.ToString());
                     Engine.Singleton.ObjectManager.Add(newCharacter);
                     break;
 
@@ -103,6 +106,9 @@ namespace WorldCreator
 					if (!Engine.Singleton.HumanController.Gravity)
 						newEnemy.Body.SetMassMatrix(0, Vector3.ZERO);
 
+                 //   Console.WriteLine(newCharacter.Position.ToString());
+                 //   Console.WriteLine(AimPosition.ToString());
+                 //   Console.WriteLine(Camera.Position.ToString());
                     Engine.Singleton.ObjectManager.Add(newEnemy);
                     break;
             }

@@ -178,7 +178,7 @@ namespace WorldCreator
                         if (User.InventoryItem.InventoryPictureMaterial != null && I[SelectedOne].InventoryPictureMaterial != "-")
                             ChosenItemPicture.Panel.MaterialName = User.InventoryItem.InventoryPictureMaterial;
                         else
-                            ChosenItemPicture.Panel.MaterialName = "NoImage";
+                            ChosenItemPicture.Panel.MaterialName = "QuadMaterial";
                     }
 
                     else
