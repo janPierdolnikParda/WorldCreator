@@ -69,7 +69,8 @@ namespace WorldCreator
                 if (!Root.ShowConfigDialog())
                     return;
 
-            RenderWindow = Root.Initialise(true, "WorldCreator v.0.0.1");  // @@@@@@@@@@@@@@@ Nazwa okna gry.
+			Root.RenderSystem.SetConfigOption("VSync", "Yes");
+            RenderWindow = Root.Initialise(true, "WorldCreator");  // @@@@@@@@@@@@@@@ Nazwa okna gry.
             ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
             
             SceneManager = Root.CreateSceneManager(SceneType.ST_GENERIC);
