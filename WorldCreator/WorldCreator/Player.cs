@@ -46,20 +46,20 @@ namespace WorldCreator
 
             if (Engine.Singleton.HumanController.State == HumanController.HumanControllerState.FREE)
             {
-                FocusedObject = null;
+				FocusedObject = null;
 
-                PredicateRaycast raycast = new PredicateRaycast((b => !(b.UserData is TriggerVolume)));
-                raycast.Go(Engine.Singleton.NewtonWorld, Camera.Position, AimPosition);
-                if (raycast.Contacts.Count != 0)
-                {
-                    raycast.SortContacts();
-                    AimPosition = Camera.Position
-                      + (AimPosition - Camera.Position) * raycast.Contacts[0].Distance
-                      + raycast.Contacts[0].Normal * 0.01f * length;
+				PredicateRaycast raycast = new PredicateRaycast((b => !(b.UserData is TriggerVolume)));
+				raycast.Go(Engine.Singleton.NewtonWorld, Camera.Position, AimPosition);
+				if (raycast.Contacts.Count != 0)
+				{
+					raycast.SortContacts();
+					AimPosition = Camera.Position
+					  + (AimPosition - Camera.Position) * raycast.Contacts[0].Distance
+					  + raycast.Contacts[0].Normal * 0.01f * length;
 
-                    if (raycast.Contacts[0].Body.UserData is GameObject)
-                        FocusedObject = raycast.Contacts[0].Body.UserData as GameObject;
-                }
+					if (raycast.Contacts[0].Body.UserData is GameObject)
+						FocusedObject = raycast.Contacts[0].Body.UserData as GameObject;
+				}
             }
         }
 
