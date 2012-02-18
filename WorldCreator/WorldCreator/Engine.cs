@@ -365,7 +365,7 @@ namespace WorldCreator
 
                 foreach (XmlNode item in Items)
                 {
-                    Character newCharacter = new Character(WorldCreator.CharacterProfileManager.E[item["ProfileName"].InnerText]);
+                    Enemy newCharacter = new Enemy(WorldCreator.CharacterProfileManager.E[item["ProfileName"].InnerText]);
                     Vector3 Position = new Vector3();
 
                     Quaternion Orientation = new Quaternion(float.Parse(item["Orientation_w"].InnerText), float.Parse(item["Orientation_x"].InnerText), float.Parse(item["Orientation_y"].InnerText), float.Parse(item["Orientation_z"].InnerText));
