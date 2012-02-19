@@ -12,10 +12,15 @@ namespace WorldCreator
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("***************************************\n");
+            Console.Write("\tPodaj nazwe mapy: ");
+            String MapName;
+            MapName = Console.ReadLine();
+            Console.WriteLine("\n***************************************");
             Engine.Singleton.Initialise();
 
             Engine.Singleton.CurrentLevel = new Level();
-            Engine.Singleton.CurrentLevel.LoadLevel("Karczma");
+            Engine.Singleton.CurrentLevel.LoadLevel(MapName);
 
             Light light = Engine.Singleton.SceneManager.CreateLight();
             light.Type = Light.LightTypes.LT_DIRECTIONAL;

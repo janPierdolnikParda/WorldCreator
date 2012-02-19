@@ -177,6 +177,7 @@ namespace WorldCreator
                     w.WriteElementString("Orientation_x", (GO as Described).Orientation.x.ToString());
                     w.WriteElementString("Orientation_y", (GO as Described).Orientation.y.ToString());
                     w.WriteElementString("Orientation_z", (GO as Described).Orientation.z.ToString());
+                    w.WriteElementString("Activator", (GO as Described).Activator);
                     w.WriteEndElement();
                 }
 
@@ -192,6 +193,7 @@ namespace WorldCreator
                     w.WriteElementString("Orientation_x", (GO as Described).Orientation.x.ToString());
                     w.WriteElementString("Orientation_y", (GO as Described).Orientation.y.ToString());
                     w.WriteElementString("Orientation_z", (GO as Described).Orientation.z.ToString());
+                    w.WriteElementString("Activator", (GO as Described).Activator);
                     w.WriteEndElement();
                 }
             }
@@ -296,6 +298,7 @@ namespace WorldCreator
                         Position.y = float.Parse(item["Position_y"].InnerText);
                         Position.z = float.Parse(item["Position_z"].InnerText);
                         newDescribed.Position = Position;
+                        newDescribed.Activator = item["Activator"].InnerText;
 
                         Engine.Singleton.ObjectManager.Add(newDescribed);
                     }
@@ -312,6 +315,7 @@ namespace WorldCreator
                         Position.y = float.Parse(item["Position_y"].InnerText);
                         Position.z = float.Parse(item["Position_z"].InnerText);
                         newDescribed.Position = Position;
+                        newDescribed.Activator = item["Activator"].InnerText;
 
                         Engine.Singleton.ObjectManager.Add(newDescribed);
                     }

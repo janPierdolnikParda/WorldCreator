@@ -10,7 +10,7 @@ namespace WorldCreator
     public class Described : SelectableObject
     {
         public DescribedProfile Profile;
-
+        public String Activator;
 		
         Entity Entity;
         SceneNode Node;
@@ -21,7 +21,7 @@ namespace WorldCreator
         public Described(DescribedProfile profile)
         {
             Profile = profile.Clone();
-
+            Activator = "";
             Entity = Engine.Singleton.SceneManager.CreateEntity(Profile.MeshName);
             Node = Engine.Singleton.SceneManager.RootSceneNode.CreateChildSceneNode();
 
