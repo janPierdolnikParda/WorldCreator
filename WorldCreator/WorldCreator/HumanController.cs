@@ -587,6 +587,11 @@ namespace WorldCreator
 
             if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_H) && User.FocusedObject != null && User.FocusedObject is Described)
             {
+                while (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_H))
+                {
+                    Engine.Singleton.Keyboard.Capture();
+                }
+
                 Console.WriteLine("*\taktualny aktywator: " + (User.FocusedObject as Described).Activator);
                 Console.Write("*\tnowy aktywator: ");
                 (User.FocusedObject as Described).Activator = Console.ReadLine();
