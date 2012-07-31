@@ -159,6 +159,10 @@ namespace WorldCreator
                     case HUD.InventoryCategory.ENEMY:
                         HUD.Category = HUD.InventoryCategory.CHARACTER;
                         break;
+                    
+                    case HUD.InventoryCategory.WAYPOINT:
+                        HUD.Category = HUD.InventoryCategory.ENEMY;
+                        break;
                 }
 
                 HUD.SelectedOne = -1;
@@ -178,6 +182,10 @@ namespace WorldCreator
 
                     case HUD.InventoryCategory.CHARACTER:
                         HUD.Category = HUD.InventoryCategory.ENEMY;
+                        break;
+
+                    case HUD.InventoryCategory.ENEMY:
+                        HUD.Category = HUD.InventoryCategory.WAYPOINT;
                         break;
                 }
 
@@ -558,7 +566,13 @@ namespace WorldCreator
 
             if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_GRAVE))
             {
+                HUD.lastCategory = HUD.Category;
                 HUD.Category = WorldCreator.HUD.InventoryCategory.WAYPOINT;
+            }
+
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_1))
+            {
+                HUD.Category = HUD.lastCategory;
             }
 
             if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))
@@ -593,16 +607,26 @@ namespace WorldCreator
                 User.FocusedObject = null;
             }
 
-            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_H) && User.FocusedObject != null && User.FocusedObject is Described)
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_H) && User.FocusedObject != null && (User.FocusedObject is Described || User.FocusedObject is WayPoint))
             {
                 while (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_H))
                 {
                     Engine.Singleton.Keyboard.Capture();
                 }
 
-                Console.WriteLine("*\taktualny aktywator: " + (User.FocusedObject as Described).Activator);
-                Console.Write("*\tnowy aktywator: ");
-                (User.FocusedObject as Described).Activator = Console.ReadLine();
+                if (User.FocusedObject is Described)
+                {
+                    Console.WriteLine("*\taktualny aktywator: " + (User.FocusedObject as Described).Activator);
+                    Console.Write("*\tnowy aktywator: ");
+                    (User.FocusedObject as Described).Activator = Console.ReadLine();
+                }
+
+                else
+                {
+                    Console.WriteLine("*\taktualna nazwa: " + (User.FocusedObject as WayPoint).DisplayName);
+                    Console.Write("*\tnowa nazwa: ");
+                    (User.FocusedObject as WayPoint).DisplayName = Console.ReadLine();
+                }
             }
 
             if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_G) && User.FocusedObject != null)

@@ -105,6 +105,7 @@ namespace WorldCreator
         public TextLabel ChosenItemLabel;
 
         public InventoryCategory Category = InventoryCategory.DESCRIBED;
+        public InventoryCategory lastCategory;
 
 		public SimpleQuad GravityBg;
 		public TextLabel GravityLabel;

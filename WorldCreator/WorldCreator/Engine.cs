@@ -263,6 +263,33 @@ namespace WorldCreator
             Enemies.WriteEndElement();
             Enemies.Flush();
             Enemies.Close();
+
+            //*************************************************************//
+            //                                                             //
+            //                          WAYPOINTY                          //
+            //                                                             //
+            //*************************************************************//
+
+            XmlTextWriter WayPoints = new XmlTextWriter("Media\\Maps\\" + CurrentLevel.Name + "\\Waypoints.xml", (Encoding)null);
+
+            WayPoints.WriteStartElement("waypoints");
+
+            foreach (GameObject GO in Engine.Singleton.ObjectManager.Objects)
+            {
+                if (GO.GetType().ToString() == "WorldCreator.WayPoint")
+                {
+                    WayPoints.WriteStartElement("waypoint");
+                    WayPoints.WriteElementString("DisplayName", (GO as WayPoint).DisplayName);
+                    WayPoints.WriteElementString("Position_x", (GO as WayPoint).Position.x.ToString());
+                    WayPoints.WriteElementString("Position_y", (GO as WayPoint).Position.y.ToString());
+                    WayPoints.WriteElementString("Position_z", (GO as WayPoint).Position.z.ToString());
+                    WayPoints.WriteEndElement();
+                }
+            }
+
+            WayPoints.WriteEndElement();
+            WayPoints.Flush();
+            WayPoints.Close();
         }
 
         public void Load()
