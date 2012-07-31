@@ -550,7 +550,15 @@ namespace WorldCreator
                         if (User.InventoryCharacter != null)
                             User.AddItem(true);
                         break;
+                    case HUD.InventoryCategory.WAYPOINT:
+                        User.AddItem(true);
+                        break;
                 }
+            }
+
+            if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_GRAVE))
+            {
+                HUD.Category = WorldCreator.HUD.InventoryCategory.WAYPOINT;
             }
 
             if (Engine.Singleton.Mouse.MouseState.ButtonDown(MOIS.MouseButtonID.MB_Right))

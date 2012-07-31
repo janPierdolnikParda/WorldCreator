@@ -126,8 +126,6 @@ namespace WorldCreator
             // Engine.Singleton.NewtonWorld, Body, Vector3.UNIT_Y);
 
             collision.Dispose();
-
-
         }
 
         void BodyTransformCallback(Body sender, Quaternion orientation,

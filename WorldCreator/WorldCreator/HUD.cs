@@ -13,6 +13,7 @@ namespace WorldCreator
             DESCRIBED,
             CHARACTER,
             ENEMY,
+            WAYPOINT,
             LIGHT
         }
 

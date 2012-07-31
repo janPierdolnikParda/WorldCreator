@@ -67,6 +67,13 @@ namespace WorldCreator
         {
             switch (Engine.Singleton.HumanController.HUD.Category)
             {
+                case HUD.InventoryCategory.WAYPOINT:
+                    WayPoint newWayPoint = new WayPoint();
+                    newWayPoint.Position = AimPosition;
+                    newWayPoint.DisplayName = Engine.Singleton.CurrentLevel.Name + "_NEW_WP";
+
+                    Engine.Singleton.ObjectManager.Add(newWayPoint);
+                    break;
                 case HUD.InventoryCategory.DESCRIBED:
                     Described newItem = new Described(InventoryItem);
                     if (Left)
