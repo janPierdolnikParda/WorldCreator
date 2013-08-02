@@ -12,6 +12,8 @@ namespace WorldCreator
     {
         static void Main(string[] args)
         {
+            bool Kibel = false;
+
             Console.WriteLine("***************************************\n");
             Console.Write("\tPodaj nazwe mapy: ");
             String MapName;
@@ -69,12 +71,13 @@ namespace WorldCreator
                 if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_F2))
                     Engine.Singleton.Load();
 
-				if (Engine.Singleton.Keyboard.IsKeyDown(MOIS.KeyCode.KC_F3))
-				{
-					Engine.Singleton.NewtonDebugger.ShowDebugInformation();
-				}
-				else
-					Engine.Singleton.NewtonDebugger.HideDebugInformation();
+				if (Engine.Singleton.IsKeyTyped(MOIS.KeyCode.KC_F3))
+                    Kibel = !Kibel;
+
+                if (Kibel)
+                    Engine.Singleton.NewtonDebugger.ShowDebugInformation();
+                else
+                    Engine.Singleton.NewtonDebugger.HideDebugInformation();
             }
 
             Engine.Singleton.Root.Dispose();

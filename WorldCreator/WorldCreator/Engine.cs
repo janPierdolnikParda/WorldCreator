@@ -138,8 +138,12 @@ namespace WorldCreator
             while (TimeAccumulator >= FixedTimeStep)
             {
                 TypedInput.Update();
-                
-                NewtonWorld.Update(FixedTimeStep);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    NewtonWorld.Update(FixedTimeStep / 4.0f);
+                }
+    
                 HumanController.Update();
                 ObjectManager.Update();
                 TimeAccumulator -= FixedTimeStep;
